@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$Title$</title>
+    <link rel="stylesheet" type="text/css" href="dashboardStyles.css">
+    <script src="jquery-3.3.1.js"></script>
+    <script src="echarts.js"></script>
+    <script src="jquery.cookie.js"></script>
+    <!--delete this-->
+    <script src="testFile.js"></script>
+    <!--delete this end-->
+    <!-- classes -->
+    <script src="MessageData.js"></script>
+    <script src="Message.js"></script>
+    <script src="DateHelper.js"></script>
+    <script src="MessageDay.js"></script>
+    <script src="MessageHour.js"></script>
+    <script src="MessageMinute.js"></script>
+    <script src="FilterProperties.js"></script>
+    <!-- classes end-->
+    <script src="lineChart1.js"></script>
+    <script src="gaugeChart1.js"></script>
+    <script src="gaugeChart2.js"></script>
+    <script src="bubbleChart1.js"></script>
+    <script src="gaugeChart3.js"></script>
+    <script src="menuActions.js"></script>
+    <script src="main.js"></script>
+
+
+    <script type='text/javascript'>
+
+        function codeAddress() {
+
+            initVariables3();
+            initVariables6();
+            initVariables4();
+
+            initGraph1(getbeginOfDay(new Date()), getendOfDay(new Date()));
+            //initGraph2();
+            initGraph3();
+            initGraph4();
+            initGraph5();
+            initGraph6();
+
+            connect();
+        }
+
+        $(document).ready(function () {
+            $.getScript("menuActions.js");
+
+            //*************************************************//
+
+            $("#menu").click(function () {
+
+
+                $("#menu").css('height', '500px')
+            });
+            setProperties();
+        });
+
+        window.onload = codeAddress;
+    </script>
+
+    <script>
+
+        function setProperties() {
+            if (!!$.cookie('koerbe')) {
+                var preSelectedKoerbe = $.parseJSON($.cookie("koerbe"));
+
+                preSelectedKoerbe.forEach(function (element) {
+                    $("#korbMultiSelector option[value=" + element.korbName + "]").prop("selected", "selected");
+                });
+            }
+            if (!!$.cookie('guis')) {
+                var preSelectedGui = $.parseJSON($.cookie("guis"));
+                preSelectedGui.forEach(function (element) {
+
+                    $(".guicheckboxes[value=" + element.guiName + "]").prop("checked", "checked");
+                });
+            }
+            if (!!$.cookie('zeitspanne')) {
+                var preSelectedZeitspanne = $.cookie("zeitspanne");
+                $(".zeitspanne[value=" + preSelectedZeitspanne + "]").prop("checked", "checked");
+            }
+            updateProperties();
+        }
+
+    </script>
+
+
+</head>
+<body class="gradient3">
+<!-- this is menu -->
+<input type="checkbox" name="toggle" id="toggle"/>
+
+<label for="toggle"></label>
+
+<div class="container" style="">
+
+</div>
+
+<div class="message" style="background-color: #0D1A46">
+    <div style="width:150px; height: 100%; float: left">
+        <form id="radiob">
+
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="2" checked/> Tagesbeginn
+            <br/>
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="1"/> Stundenbeginn
+        </form>
+    </div>
+
+    <div style="width: 200px; height: 100%; float: left">
+
+        <select id="korbMultiSelector" name="koerbe" multiple style="width: 180px; height: 100%">
+            <option class="update" value="Korb0">Korb0</option>
+            <option class="update" value="Korb1">Korb1</option>
+            <option class="update" value="Korb2">Korb2</option>
+            <option class="update" value="Korb3">Korb3</option>
+            <option class="update" value="Korb4">Korb4</option>
+            <option class="update" value="Korb5">Korb5</option>
+            <option class="update" value="Korb6">Korb6</option>
+            <option class="update" value="Korb7">Korb7</option>
+        </select>
+
+    </div>
+
+    <div style="width:150px; height: 100%; float: left">
+
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="0"/> gui 0
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="1"/> gui 1
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="2"/> gui 2
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="3"/> gui 3
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="4"/> gui 4
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="5"/> gui 5
+
+    </div>
+
+
+</div>
+
+<div style="height: 55% ;width:100%">
+    <div style="position:relative; width:33%; height:100%;float:left;">
+        <div style="width:100%; height:15%; float:left"></div>
+        <div style="width:100%; height:5%; float:left;">
+            <p style="text-align:center ">#Neu</p>
+        </div>
+        <div id="main_1" style="width:100%; height:60%; float:left;"></div>
+        <div style="width:100%; height:20%; float:left"></div>
+
+    </div>
+
+    <div style="position:relative; width:34%; height:100%;float:left;">
+        <div style="width:100%; height:5%; float:left;">
+            <p style="width:100%;text-align:center">#Abgearbeitet</p>
+        </div>
+        <!--<div style = "background-color:yellow;float:left; width:100%; height:70%;"></div>-->
+        <div id="main_4" style=";top:0; width:100%; height:60%; float:left"></div>
+        <!--<div id="main" style="margin:0; left:10%; top:-40%; width:80%; height:60%"></div>-->
+    </div>
+
+    <div style="position:relative; width:33%; height:100%;float:left; ">
+        <div style="width:100%; height:15%; float:left; "></div>
+        <div style="width:100%; height:5%; float:left; ">
+            <p style="text-align:center ">#Aktuell im Korb</p>
+        </div>
+        <div id="main_6" style="width:100%; height:60%; float:left;"></div>
+        <div style="width:100%; height:20%; float:left"></div>
+    </div>
+</div>
+<div style="margin:0; left:0; top: -180px; width:100%; height:25%; position:relative;">
+
+    <div style="margin:0; left:25%; top:0px; width:100%; height:50px; float: left;">
+        <p style="text-align: center;  top:0px; width:100%; height:50px; ">
+            #Abgearbeitet/min</p>
+    </div>
+    <div id="main"
+         style="margin:0; left:25%; top:-50px; width:50%; height:calc(100% - 0px);position:relative;float:left;"></div>
+
+</div>
+
+<div style="margin:0; left:0; top: -180px; width:100%; height:30%; position:relative;">
+
+    <div style="margin:0px;left:0; top:-50px; width:100%; height:30px; position:relative; float:left;">
+        <p style="left:0; width: 100%;text-align: center; float:left;position:relative">
+            #Abgearbeitet/min
+        </p>
+    </div>
+
+    <div style="margin:0px; left:0; top:30px; height: calc(100% - 30px); width:100%; position:relative; ">
+        <div style = "left:0; top:-80px; height: 100%; width: 100%;  position:relative; " id="main5"></div>
+    </div>
+
+</div>
+
+</body>
+</html>

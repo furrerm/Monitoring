@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="cssDashboardUnit" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/mysqlressource</jta-data-source>
+
+        <class>entities.DataEntity</class>
+
+        <properties>
+
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/cssDashboard"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        </properties>
+
+        <!--
+            <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/cssdashboard"/>
+            <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/cssdashboard"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/cssdashboard"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/cssdashboard"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+
+
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/poker?zeroDateTimeBehavior=convertToNull"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.password" value="cindy1986"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+
+        </properties>
+        -->
+    </persistence-unit>
+</persistence>

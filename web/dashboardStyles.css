@@ -1,0 +1,210 @@
+/* background gradient end*/
+
+/* experiments*/
+html {
+    height: 100%;
+    background-color: #000000;
+    padding: 0;
+    margin: 0;
+}
+body{
+    height: 100%;
+    background-color: #000000;
+    padding: 0;
+    margin: 0;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/* experiments end*/
+
+
+
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    width: 150px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    float: left;
+    /*position: relative;*/
+    display: inline-block;
+    width: 100%;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content p {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+
+}
+
+.dropdown-content p:hover {
+    background-color: yellow;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+/* from here on is toogle menu */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, Sans-serif;
+    word-spacing: -2px;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #191919;
+    -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 20px;
+    color: #888;
+    padding: 5px 0;
+}
+
+.message {
+    background: #181818;
+    color: #FFF;
+    position: absolute;
+    top: -250px;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    padding: 20px;
+    transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    overflow: hidden;
+    box-sizing: border-box;
+
+}
+
+.message h1 {
+    color: #FFF;
+}
+
+#toggle {
+    position: absolute;
+    appearance: none;
+    cursor: pointer;
+    left: -100%;
+    top: -100%;
+}
+
+#toggle + label {
+    position: absolute;
+    cursor: pointer;
+    padding: 10px;
+    background: #0D1A46;
+    width: 100px;
+    border-radius: 3px;
+    padding: 8px 10px;
+    color: #FFF;
+    line-height: 20px;
+    font-size: 12px;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    margin: 20px 50px;
+    transition: all 500ms ease;
+}
+
+#toggle + label:after {
+    content: "Filter"
+}
+
+.container {
+    transition: margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    padding: 40px 30px;
+
+}
+
+#toggle:checked ~ .message {
+    top: 0;
+}
+
+#toggle:checked ~ .container {
+    margin-top: 250px;
+}
+
+#toggle:checked + label {
+    background: #1FA8DD;
+}
+
+#toggle:checked + label:after {
+    content: "Schliessen"
+}
+
+/* from here on is toogle menu end*/
+
+/* background gradient*/
+.gradient {
+
+    /* can be treated like a fallback */
+    background-color: red;
+
+    /* will be "on top", if browser supports it */
+    background-image: linear-gradient(red, orange);
+
+    /* these will reset other properties, like background-position, but it does know what you mean */
+    background: red;
+    background: linear-gradient(red, orange);
+
+}
+
+.gradient2 {
+    background: #000000; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0f9b0f, #000000); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.gradient3 {
+    background: #c21500;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fef9ff, #8fc2c2);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom,#fef9ff, #8fc2c2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+

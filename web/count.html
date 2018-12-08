@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type='text/javascript'>
+
+        function updateCount(counterVariable) {
+
+            document.getElementById('count').innerHTML = counterVariable;
+            //parent.hidden.location.href = "";
+        };
+
+
+    </script>
+    <script src="echarts.js"></script>
+    <script src="lineChart1.js"></script>
+    <script src="graph2.js"></script>
+    <script src="gaugeChart1.js"></script>
+    <script src="gaugeChart2.js"></script>
+    <script type="text/javascript">
+        function codeAddress() {
+            initGraph1();
+            initGraph2();
+            initGraph3();
+            initGraph4();
+        }
+        window.onload = codeAddress;
+    </script>
+</head>
+<body>
+<center>
+    <h3>Live messages vom client:</h3>
+    <p>
+
+        <b id="count">&nbsp;</b>
+
+    <p>
+</center>
+<!--<div id ="main" style = "width:500px; height:300px; background-color: aqua; float:left"></div>-->
+<div id ="main2" style = "width:500px; height:300px; background-color: aqua; float:left"></div>
+<div id ="main_1" style = "width:500px; height:300px; background-color: aqua; float:left"></div>
+<div id ="main_2" style = "width:500px; height:300px; background-color: aqua; float:left"></div>
+</body>
+</html>
