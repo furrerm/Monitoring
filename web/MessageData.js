@@ -170,6 +170,8 @@ class MessageData {
                 if (this.bubbleChart1Data[0][i][6] >= messageDateBeginOfHour && this.bubbleChart1Data[0][i][6] <= messageDateBeginOfHour) {
                     if (properties.koerbe.includes(message.korb) && properties.guis.includes(message.gui.toString()) && message.out === 1) {
                         this.bubbleChart1Data[0][i][2]++;
+                        this.bubbleChart1Data[0][i][1]++;
+                        this.bubbleChart1Data[0][i][3] = this.bubbleChart1Data[0][i][2].toString();
                     }
                 }
                 // biggestValueInBubbleChart wird für skalierung der bubbles benötigt.

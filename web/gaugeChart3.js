@@ -18,7 +18,7 @@ var globalOption6;
 function initVariables6(){
 
     thickness6 = 8;
-    radius6 = 0.8;
+    radius6 = 0.9;
     radiusInPercentage6 = (radius6 * 100) + "%";
 
     _x6 = $('#main_6')[0].offsetWidth;
@@ -50,7 +50,7 @@ function initGraph6() {
                 //detail: {formatter: '{value}%'},
                 center: ["50%", "50%"],
                 startAngle: 270,
-                endAngle: -89,
+                endAngle: -89.9999,
                 radius: radiusInPercentage6,
                 data: [{value: 0}],
                 min: 0,
@@ -93,6 +93,7 @@ function initGraph6() {
 
             }
         ],
+        /*
         graphic: [{
             type: 'circle',
             shape: {
@@ -115,7 +116,7 @@ function initGraph6() {
                 lineWidth: 0
             },
             z: 3
-        }]
+        }]*/
     };
 
     globalOption6 = option6;
@@ -151,8 +152,8 @@ function updateGauge6(counterVariable) {
     globalOption6.series[0].data[0].value = counterVariable; //(Math.random() * 100).toFixed(2) - 0;
     globalOption6.series[0].axisLine.lineStyle.color = [[counterVariable / maxValue, '#1FA8DD'],[1, '#0D1A46']];
 
-    globalOption6.graphic[0].shape.cx = cx6 - pointRadius6 * angleX ;
-    globalOption6.graphic[0].shape.cy = cy6 - pointRadius6 * angleY;
+    //globalOption6.graphic[0].shape.cx = cx6 - pointRadius6 * angleX ;
+    //globalOption6.graphic[0].shape.cy = cy6 - pointRadius6 * angleY;
 
     myChart_6.setOption(globalOption6, true);
 

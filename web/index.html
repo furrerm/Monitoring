@@ -56,8 +56,27 @@
                 $("#menu").css('height', '500px')
             });
             setProperties();
+            setTime();
         });
+function setTime() {
 
+    var weekday = new Array(7);
+    weekday[0] =  "Sonntag";
+    weekday[1] = "Montag";
+    weekday[2] = "Dienstag";
+    weekday[3] = "Mittwoch";
+    weekday[4] = "Donnerstag";
+    weekday[5] = "Freitag";
+    weekday[6] = "Samstag";
+
+
+
+            setInterval(function () {
+                d = new Date();
+
+                $('#timeLabel').html(weekday[d.getDay()]+" "+d.getUTCDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+"&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+d.getHours()+":"+d.getMinutes());
+            }, 1000);
+        }
         window.onload = codeAddress;
     </script>
 
@@ -95,9 +114,10 @@
 
 <label for="toggle"></label>
 
-<div class="container" style="">
+<div class="container" style="border-bottom: lightgray; border-bottom-style: solid; border-bottom-width: 2px">
 
 </div>
+<p id = "timeLabel" style = "color: gray; width: 400px; position: absolute; top:25px; left:50px"></p>
 
 <div class="message" style="background-color: #0D1A46">
     <div style="width:150px; height: 100%; float: left">
@@ -139,60 +159,86 @@
         <input class="update guicheckboxes" type="checkbox" name="gui" value="5"/> gui 5
 
     </div>
+</div>
+<div style = "width:30%; height: 60%; float: left;">
+    <div  style = "height: 8%;">
 
+    </div>
+    <div class = "topBoarder" style = "height: 15%;">
+        <h2 class = filterTitels > Zeitraum</h2>
+        <p class = filterLabels  ></p>
+    </div>
+    <div class = "topBoarder" style = "height: 26%">
+        <h2 class = filterTitels> Aktive Gui's</h2>
+        <p class = filterLabels  ></p>
+    </div>
+    <div class = "topBoarder" style = "height: 51%;">
+        <h2 class = filterTitels> Aktive Arbeitskoerbe</h2>
+        <p class = filterLabels  ></p>
+    </div>
+</div>
+<div style = "width:70%; height: 60%; float: left">
+    <div style="height: 60% ;width:100%;float: left">
+        <div style="width:33%; height:100%;float:left;">
+            <div style="width:100%; height:1%; float:left"></div>
+
+            <div id="main_1" style="width:100%; height:85%; float:left;"></div>
+            <div style="width:100%; height:2%; float:left"></div>
+            <div style="width:100%; height:5%; float:left;">
+                <h2 style="text-align:center ">Neue Belege</h2>
+            </div>
+        </div>
+
+        <div style="position:relative; width:34%; height:100%;float:left;">
+            <div style="width:100%; height:1%; float:left"></div>
+
+
+            <div id="main_4" style=";top:0; width:100%; height:85%; float:left"></div>
+            <div style="width:100%; height:2%; float:left"></div>
+            <div style="width:100%; height:5%; float:left;">
+                <h2 style="width:100%;text-align:center">Abgearbeitete Belege</h2>
+            </div>
+        </div>
+
+        <div style="position:relative; width:33%; height:100%;float:left; ">
+            <div style="width:100%; height:1%; float:left; "></div>
+
+            <div id="main_6" style="width:100%; height:85%; float:left;"></div>
+            <div style="width:100%; height:2%; float:left"></div>
+            <div style="width:100%; height:5%; float:left; ">
+                <h2 style="text-align:center ">Belege in Arbeitsk&ouml;rben</h2>
+            </div>
+        </div>
+    </div>
+
+    <div style="width:100%; height:40%; float: left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
+
+        <div style="width:100%; height:10%; float: left">
+            <h2 style="text-align: left; width:100%; height:50px;">
+                Abgearbeitet/h
+            </h2>
+        </div>
+        <div id="main"
+             style="width:100%; height:90%;float:left">
+
+        </div>
+    </div>
 
 </div>
 
-<div style="height: 55% ;width:100%">
-    <div style="position:relative; width:33%; height:100%;float:left;">
-        <div style="width:100%; height:15%; float:left"></div>
-        <div style="width:100%; height:5%; float:left;">
-            <p style="text-align:center ">#Neu</p>
-        </div>
-        <div id="main_1" style="width:100%; height:60%; float:left;"></div>
-        <div style="width:100%; height:20%; float:left"></div>
 
+
+
+<div style="width:100%; height:30%;float:left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
+
+    <div style=" width:100%; height:10%;float:left;">
+        <h2 style=" width: 100%;text-align: left; float:left">
+            Abgearbeitet/h
+        </h2>
     </div>
 
-    <div style="position:relative; width:34%; height:100%;float:left;">
-        <div style="width:100%; height:5%; float:left;">
-            <p style="width:100%;text-align:center">#Abgearbeitet</p>
-        </div>
-        <!--<div style = "background-color:yellow;float:left; width:100%; height:70%;"></div>-->
-        <div id="main_4" style=";top:0; width:100%; height:60%; float:left"></div>
-        <!--<div id="main" style="margin:0; left:10%; top:-40%; width:80%; height:60%"></div>-->
-    </div>
-
-    <div style="position:relative; width:33%; height:100%;float:left; ">
-        <div style="width:100%; height:15%; float:left; "></div>
-        <div style="width:100%; height:5%; float:left; ">
-            <p style="text-align:center ">#Aktuell im Korb</p>
-        </div>
-        <div id="main_6" style="width:100%; height:60%; float:left;"></div>
-        <div style="width:100%; height:20%; float:left"></div>
-    </div>
-</div>
-<div style="margin:0; left:0; top: -180px; width:100%; height:25%; position:relative;">
-
-    <div style="margin:0; left:25%; top:0px; width:100%; height:50px; float: left;">
-        <p style="text-align: center;  top:0px; width:100%; height:50px; ">
-            #Abgearbeitet/min</p>
-    </div>
-    <div id="main"
-         style="margin:0; left:25%; top:-50px; width:50%; height:calc(100% - 0px);position:relative;float:left;"></div>
-
-</div>
-
-<div style="margin:0; left:0; top: -180px; width:100%; height:30%; position:relative;">
-
-    <div style="margin:0px;left:0; top:-50px; width:100%; height:30px; position:relative; float:left;">
-        <p style="left:0; width: 100%;text-align: center; float:left;position:relative">
-            #Abgearbeitet/min
-        </p>
-    </div>
-
-    <div style="margin:0px; left:0; top:30px; height: calc(100% - 30px); width:100%; position:relative; ">
-        <div style = "left:0; top:-80px; height: 100%; width: 100%;  position:relative; " id="main5"></div>
+    <div style=" height: 90%; width:100%;  ">
+        <div style = " height: 100%; width: 100%;   " id="main5"></div>
     </div>
 
 </div>

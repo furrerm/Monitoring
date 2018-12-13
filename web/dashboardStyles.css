@@ -6,6 +6,33 @@ html {
     background-color: #000000;
     padding: 0;
     margin: 0;
+
+
+}
+.filterLabels{
+    /*border: 0px solid ;*/
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding-top: 10px;
+    float:right;
+    display: inline;
+    text-align: center;
+    background-color: #00a7e0;
+    width: 100px;
+    height: 30px;
+    color: white;
+}
+.filterTitels{
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    display:inline;
+}
+h2{
+    font-family:"Calibri";
+    /*font-size: 25px;*/
+    color: #162388;
 }
 body{
     height: 100%;
@@ -101,12 +128,7 @@ h1 {
     -webkit-font-smoothing: antialiased;
 }
 
-h2 {
-    font-weight: normal;
-    font-size: 20px;
-    color: #888;
-    padding: 5px 0;
-}
+
 
 .message {
     background: #181818;
@@ -133,10 +155,13 @@ h2 {
     cursor: pointer;
     left: -100%;
     top: -100%;
+
 }
 
 #toggle + label {
     position: absolute;
+    top:0px;
+    right:0;
     cursor: pointer;
     padding: 10px;
     background: #0D1A46;
@@ -150,21 +175,24 @@ h2 {
     -webkit-font-smoothing: antialiased;
     cursor: pointer;
     margin: 20px 50px;
-    transition: all 500ms ease;
+    transition: all 250ms ease;
+    /*transition: margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94)*/
 }
 
 #toggle + label:after {
-    content: "Filter"
+    content: "Filter";
+
 }
 
 .container {
-    transition: margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    transition: all 300ms ease;
     padding: 40px 30px;
 
 }
 
 #toggle:checked ~ .message {
     top: 0;
+
 }
 
 #toggle:checked ~ .container {
@@ -173,10 +201,14 @@ h2 {
 
 #toggle:checked + label {
     background: #1FA8DD;
+    top:250px;
+    right:0;
 }
 
 #toggle:checked + label:after {
-    content: "Schliessen"
+    content: "Schliessen";
+    top:250px;
+    right:0;
 }
 
 /* from here on is toogle menu end*/
@@ -202,9 +234,15 @@ h2 {
     background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .gradient3 {
-    background: #c21500;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #fef9ff, #8fc2c2);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom,#fef9ff, #8fc2c2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*
+    background: #c21500;
+    background: -webkit-linear-gradient(to right, #fef9ff, #8fc2c2);
+    background: linear-gradient(to bottom,#fef9ff, #8fc2c2);
+   */
+    background-color: white;
+}
+.topBoarder {
+    border-top: lightgray; border-top-style: solid; border-top-width: 2px
 }
 
 

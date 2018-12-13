@@ -19,7 +19,7 @@ var globalOption4;
 function initVariables4(){
 
     thickness4 = 8;
-    radius4 = 0.8;
+    radius4 = 0.9;
     radiusInPercentage4 = (radius4 * 100) + "%";
 
     _x4 = $('#main_4')[0].offsetWidth;
@@ -55,7 +55,7 @@ function initGraph4() {
                 //detail: {formatter: '{value}%'},
                 center: ["50%", "50%"],
                 startAngle: 270,
-                endAngle: -89,
+                endAngle: -89.9999,
                 radius: radiusInPercentage4,
                 data: [{value: 0}],
                 min: 0,
@@ -98,6 +98,7 @@ function initGraph4() {
 
             }
         ],
+        /*
         graphic: [{
             type: 'circle',
             shape: {
@@ -123,6 +124,7 @@ function initGraph4() {
 
             z: 3
         }]
+        */
     };
 
     globalOption4 = option4;
@@ -147,8 +149,8 @@ function updateGauge4(counterVariable) {
 
     globalOption4.series[0].data[0].value = counterVariable;
     globalOption4.series[0].axisLine.lineStyle.color = [[counterVariable / maxValue, '#1FA8DD'],[1, '#0D1A46']];
-    globalOption4.graphic[0].shape.cx = cx4 - pointRadius4 * angleX;
-    globalOption4.graphic[0].shape.cy = cy4 - pointRadius4 * angleY;
+    //globalOption4.graphic[0].shape.cx = cx4 - pointRadius4 * angleX;
+    //globalOption4.graphic[0].shape.cy = cy4 - pointRadius4 * angleY;
 
 
     myChart_4.setOption(globalOption4, true);

@@ -19,8 +19,6 @@ public class Websocket {
 
     //private static Map<Session, SessionInformation> sessions = new ConcurrentHashMap<>();
 
-
-
     @OnOpen
     public void onOpen(Session userSession) {
 

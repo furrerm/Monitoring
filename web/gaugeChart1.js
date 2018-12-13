@@ -19,7 +19,7 @@ var globalOption3;
 function initVariables3(){
 
     thickness3 = 8;
-    radius3 = 0.8;
+    radius3 = 0.9;
     radiusInPercentage3 = (radius3 * 100) + "%";
 
     _x3 = $('#main_1')[0].offsetWidth;
@@ -52,7 +52,7 @@ function initGraph3() {
                 //detail: {formatter: '{value}%'},
                 center: ["50%", "50%"],
                 startAngle: 270,
-                endAngle: -89,
+                endAngle: -89.9999,
                 radius: radiusInPercentage3,
                 data: [{value: 0}],
                 min: 0,
@@ -94,7 +94,9 @@ function initGraph3() {
                 },
 
             }
-        ],
+        ]
+        /*
+        ,
         graphic: [{
             type: 'circle',
             shape: {
@@ -117,7 +119,7 @@ function initGraph3() {
                 lineWidth: 0
             },
             z: 3
-        }]
+        }]*/
     };
 
     globalOption3 = option3;
@@ -142,8 +144,8 @@ function updateGauge3(counterVariable) {
 
     globalOption3.series[0].data[0].value = counterVariable; //(Math.random() * 100).toFixed(2) - 0;
     globalOption3.series[0].axisLine.lineStyle.color = [[counterVariable / maxValue, '#1FA8DD'],[1, '#0D1A46']];
-    globalOption3.graphic[0].shape.cx = cx3 - pointRadius3 * angleX;
-    globalOption3.graphic[0].shape.cy = cy3 - pointRadius3 * angleY;
+    //globalOption3.graphic[0].shape.cx = cx3 - pointRadius3 * angleX;
+    //globalOption3.graphic[0].shape.cy = cy3 - pointRadius3 * angleY;
 
     myChart_3.setOption(globalOption3, true);
 };

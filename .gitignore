@@ -4,6 +4,7 @@ bin/
 target/
 libs/
 tmp/
+out/
 node_modules/
 jaxws/jaxws-client/src/main/
 jaxws/jaxws-endpoint/src/main/webapp/WEB-INF/wsdl/

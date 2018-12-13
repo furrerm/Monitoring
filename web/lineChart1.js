@@ -9,6 +9,10 @@ function initGraph1(begin, end) {
     myChart3 = echarts.init(document.getElementById('main'));
 
     option3 = {
+        grid: {
+            top: 10,
+            bottom:40,
+        },
         title: {
             show: false,
             text: "#Abgearbeitet / min",
@@ -34,26 +38,37 @@ function initGraph1(begin, end) {
                 show: false
             },
             min: begin,
-            max: end
+            max: end,
+            axisLabel:{
+                margin:-2
+            }
         },
         yAxis: {
             type: 'value',
+
             boundaryGap: [0, '100%'],
+
             splitLine: {
                 show: false
-            }
-            //min: 0,
+            },
+
+            //min: 60,
             //max: 10
         },
         series: [{
             name: 'aaa',
-            type: 'line',
+            type: 'bar',
             showSymbol: false,
             hoverAnimation: false,
             data: data3,
-            lineStyle: {
+            itemStyle: {
                 color: '#0D1A46'
             }
+
+
+
+
+
         }]
     };
 

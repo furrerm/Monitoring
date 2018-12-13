@@ -1,7 +1,7 @@
 var myChart5;
 var data5 = [];
 data5 = [
-    [[0, 0, 0, '', 1990, 0], [1, 0, 0, '', 1990, 1], [2, 0.4, 0, '', 1990, 2], [3, 0, 0, '', 1990, 3], [4, 0, 0, '', 1990, 4], [5, 0, 0, '', 1990, 5], [6, 0, 0, '', 1990, 6], [7, 0, 0, '', 1990, 7], [8, 0, 0, '', 1990, 8], [9, 0, 0, '', 1990, 9], [10, 0, 0, '', 1990, 10], [11, 0, 0, '', 1990, 11]],
+    [[0, 0, 0, '', 1990, 0], [1, 0, 0, '', 1990, 1], [2, 0, 0, '', 1990, 2], [3, 0, 0, '', 1990, 3], [4, 0, 0, '', 1990, 4], [5, 0, 0, '', 1990, 5], [6, 0, 0, '', 1990, 6], [7, 0, 0, '', 1990, 7], [8, 0, 0, '', 1990, 8], [9, 0, 0, '', 1990, 9], [10, 0, 0, '', 1990, 10], [11, 0, 0, '', 1990, 11]],
 
 ];
 var xData = ['     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     '];
@@ -49,7 +49,7 @@ function initGraph5() {
         },
 
         series: [{
-            name: '#Abgearbeitet',
+            /*name: '#Abgearbeitet',*/
             data: data5[0],
             type: 'scatter',
             symbolSize: function (data) {
@@ -123,7 +123,7 @@ function setDataValue5(messageDataContainer) {
             data: messageDataContainer.bubbleChartXAxe
         },
         series: [{
-            name: '#Abgearbeitet',
+            //name: '#Abgearbeitet',
             data: messageDataContainer.bubbleChart1Data[0],
             type: 'scatter',
             symbolSize: function (data, width) {
@@ -139,11 +139,16 @@ function setDataValue5(messageDataContainer) {
                     position: 'top'
                 }
             },
+            label:{
+                show: true
+            },
+            hoverAnimation:false,
             itemStyle: {
                 normal: {
-                    shadowBlur: 10,
-                    shadowColor: 'rgba(120, 36, 50, 0.5)',
-                    shadowOffsetY: 5,
+                    //shadowBlur: 10,
+                    //shadowColor: 'rgba(120, 36, 50, 0.5)',
+                    //shadowOffsetY: 5,
+                    /*
                     color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
                         offset: 0,
                         color: 'rgb(255, 255, 255)'
@@ -151,6 +156,8 @@ function setDataValue5(messageDataContainer) {
                         offset: 1,
                         color: 'rgb(25, 183, 207)'
                     }])
+                    */
+                    color:'#0D1A46'
                 }
             }
         }]

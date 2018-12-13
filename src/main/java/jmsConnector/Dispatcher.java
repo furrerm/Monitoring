@@ -57,7 +57,7 @@ public class Dispatcher {
 
         for (SessionInformation sessionInformation : sessions) {
 
-            if(sessionInformation.getSession().isOpen()){
+            if (sessionInformation.getSession().isOpen()) {
                 sessionInformation.getSession().getAsyncRemote().sendObject(createJsonString(message, messageId));
             }
         }
@@ -74,35 +74,32 @@ public class Dispatcher {
 
     private JsonObject createJsonString(sender.MessageData msg, long id) {
 
+        try {
 
+            Thread.sleep(100);
 
+            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+            jsonObjectBuilder.add("id", id);
+            jsonObjectBuilder.add("time", msg.getTime().toString());
+            jsonObjectBuilder.add("gui", msg.getGui());
+            jsonObjectBuilder.add("korb", msg.getKorb().toString());
+            jsonObjectBuilder.add("ambulant", msg.getAmbulant().toString());
+            jsonObjectBuilder.add("stationaer", msg.getStationaer().toString());
+            jsonObjectBuilder.add("partnerartObergruppe", msg.getPartnerartObergruppe().toString());
+            jsonObjectBuilder.add("plz", msg.getPlz().toString());
+            jsonObjectBuilder.add("korbstand", msg.getKorbStand());
+            jsonObjectBuilder.add("in", msg.getIn());
+            jsonObjectBuilder.add("out", msg.getOut());
 
-                try {
+            jsonObjectBuilder.add("sizeOfSessionsEntitiesSet", 200);
 
-                    Thread.sleep(100);
+            JsonObject jsonObject = jsonObjectBuilder.build();
 
-                    JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-                    jsonObjectBuilder.add("id", id);
-                    jsonObjectBuilder.add("time", msg.getTime().toString());
-                    jsonObjectBuilder.add("gui", msg.getGui());
-                    jsonObjectBuilder.add("korb", msg.getKorb().toString());
-                    jsonObjectBuilder.add("ambulant", msg.getAmbulant().toString());
-                    jsonObjectBuilder.add("stationaer", msg.getStationaer().toString());
-                    jsonObjectBuilder.add("partnerartObergruppe", msg.getPartnerartObergruppe().toString());
-                    jsonObjectBuilder.add("plz", msg.getPlz().toString());
-                    jsonObjectBuilder.add("korbstand", msg.getKorbStand());
-                    jsonObjectBuilder.add("in", msg.getIn());
-                    jsonObjectBuilder.add("out", msg.getOut());
+            return jsonObject;
 
-                    jsonObjectBuilder.add("sizeOfSessionsEntitiesSet", 200);
-
-                    JsonObject jsonObject = jsonObjectBuilder.build();
-
-                    return jsonObject;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         return null;
