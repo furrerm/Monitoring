@@ -33,55 +33,43 @@ $( "#time2" ).click(function() {
 
 });
 */
-$(".update").click(function () {
+
+$(document).ready(function () {
+
+    $('#toggle').click(function() {
+        if($('#toggle').is(':checked')) {
+            console.log("is checked");
+            //sendMessage("message zum test und wieder zu loeschen");
+        }
+    });
+    $(".update").click(function () {
 
 
-    updateProperties();
+        updateProperties();
+        //sendMessage("message zum test und wieder zu loeschen");
 
-
+    });
 });
 function updateProperties(){
-    var guis = [];
+
     var koerbe = $("#korbMultiSelector").val();
-    var zeitspanne = 1;
-
-    koerbe = $("#korbMultiSelector").val();
-    zeitspanne = $(".zeitspanne:checked").val();
-    var val3 = $(".guicheckboxes:checkbox:checked").each(function () {
-
-        guis.push($(this).val());
+    var timeOfInterestId = parseInt($(".zeitspanne:checked").val(), 10);
+    var guis = [];
+    $(".guicheckboxes:checkbox:checked").each(function () {
+        guis.push(parseInt($(this).val()));
     });
 
-    //console.log(["korb1", "mmm"]);
+    var timeOfInterest;
+    for (const entry in TimeOfInterest) {
+        if(TimeOfInterest[entry].ID === timeOfInterestId){
+            timeOfInterest = TimeOfInterest[entry];
+        }
+    }
 
-    filterProperties.guis = guis;
-    filterProperties.koerbe = koerbe;
-    filterProperties.zeitspanne = zeitspanne;
+    filterProperties = new FilterProperties(timeOfInterest, koerbe, guis);
+    messageHandler = new MessageHandler(filterProperties);
 
-    messageDataContainer.updateArrays(filterProperties);
-    messageDataContainer.updateGaugeChart1(filterProperties);
-    messageDataContainer.updateGaugeChart2(filterProperties);
-    messageDataContainer.updateGaugeChart3(filterProperties);
-
-    drawGraph1(messageDataContainer);
-
-    updateGauge3(messageDataContainer.gaugeChart1Data);
-    updateGauge6(messageDataContainer.gaugeChart2Data);
-    updateGauge4(messageDataContainer.gaugeChart3Data);
-
-    var myObject = new Object();
-
-
-    date1 = new Date();
-
-
-    myObject.begin = getbeginOfHour(new Date());
-    myObject.end = getendOfHour(new Date());
-
-    var begin = JSON.stringify(myObject);
-
-
-//create cookies
+    //create cookies
 
     var selectedKoerbe = [];
     for (var i = 0; i < koerbe.length; ++i) {
@@ -94,7 +82,7 @@ function updateProperties(){
         selectedGuis.push({'guiName': guis[i]})
     }
     $.cookie("guis", JSON.stringify(selectedGuis));
-    $.cookie("zeitspanne", zeitspanne);
+    $.cookie("zeitspanne", JSON.stringify(timeOfInterestId));
 }
 
 function getDateFormatted(date) {

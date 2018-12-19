@@ -29,7 +29,7 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
 
 
     public void onMessage(Message inMessage) {
-        final long id;
+
         ObjectMessage objectMessage = (ObjectMessage) inMessage;
 
         try {
@@ -38,7 +38,7 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                 System.out.println("MESSAGE BEAN: on bean Message received: " +
                         msg.getGui());
                 Dispatcher dispatcher = Dispatcher.getInstance();
-                id = dispatcher.sendMessage(msg);
+                dispatcher.sendMessage(msg);
 
                 entities.DataEntity entity = new entities.DataEntity();
                 entity.setKorb(msg.getKorb());
@@ -52,7 +52,6 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                 entity.setOutgoing(msg.getOut());
                 entity.setIncoming(msg.getIn());
 
-                entity.setId(id);
                 entityManager.persist(entity);
 
 

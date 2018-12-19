@@ -8,10 +8,10 @@ import javax.websocket.Session;
 
 public class SessionInformation {
 
-
     private Session session;
 
     public SessionInformation(Session session) {
+
         this.session = session;
     }
 

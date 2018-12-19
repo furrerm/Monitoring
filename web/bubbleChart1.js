@@ -4,7 +4,7 @@ data5 = [
     [[0, 0, 0, '', 1990, 0], [1, 0, 0, '', 1990, 1], [2, 0, 0, '', 1990, 2], [3, 0, 0, '', 1990, 3], [4, 0, 0, '', 1990, 4], [5, 0, 0, '', 1990, 5], [6, 0, 0, '', 1990, 6], [7, 0, 0, '', 1990, 7], [8, 0, 0, '', 1990, 8], [9, 0, 0, '', 1990, 9], [10, 0, 0, '', 1990, 10], [11, 0, 0, '', 1990, 11]],
 
 ];
-var xData = ['     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     '];
+var xData = ['    7 ', '   8  ', '  9   ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     '];
 
 function initGraph5() {
 
@@ -95,17 +95,17 @@ var change = 0;
 var temp = 0;
 var minuend = 0;
 
-function setDataValue5(messageDataContainer) {
+function setDataValue5(messageDataArray) {
 
     console.log("bubble chart =");
-    console.log(messageDataContainer.bubbleChart1Data[0]);
+    console.log(messageDataArray[0]);
 
 
     const maxSymbolHeight = $("#main5").height();
-    const maxSymbolWidth = $("#main5").width() * 0.9 / messageDataContainer.bubbleChart1Data[0].length;
-    const biggestValue = messageDataContainer.biggestValueInBubbleChart;
+    const maxSymbolWidth = $("#main5").width() * 0.9 / messageDataArray[0].length;
+    const biggestValue = messageDataArray[2];
 
-    myChart5.setOption({
+        myChart5.setOption({
         grid: {
             left: '5%',
             right: '5%'
@@ -120,11 +120,11 @@ function setDataValue5(messageDataContainer) {
             splitLine: {
                 show: false
             },
-            data: messageDataContainer.bubbleChartXAxe
+            data: messageDataArray[1]
         },
         series: [{
             //name: '#Abgearbeitet',
-            data: messageDataContainer.bubbleChart1Data[0],
+            data: messageDataArray[0],
             type: 'scatter',
             symbolSize: function (data, width) {
                 //return data[2] * 15 * 12 / messageDataContainer.biggestValueInBubbleChart;
@@ -134,7 +134,7 @@ function setDataValue5(messageDataContainer) {
                 emphasis: {
                     show: true,
                     formatter: function (param) {
-                        return messageDataContainer.bubbleChart1Data[3];
+                        return messageDataArray[3];
                     },
                     position: 'top'
                 }
@@ -145,18 +145,6 @@ function setDataValue5(messageDataContainer) {
             hoverAnimation:false,
             itemStyle: {
                 normal: {
-                    //shadowBlur: 10,
-                    //shadowColor: 'rgba(120, 36, 50, 0.5)',
-                    //shadowOffsetY: 5,
-                    /*
-                    color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-                        offset: 0,
-                        color: 'rgb(255, 255, 255)'
-                    }, {
-                        offset: 1,
-                        color: 'rgb(25, 183, 207)'
-                    }])
-                    */
                     color:'#0D1A46'
                 }
             }

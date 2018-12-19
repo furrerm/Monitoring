@@ -2,6 +2,9 @@ class DateHelper{
     constructor() {
 
     }
+    static daysInMonth (month, year) {
+        return new Date(year, month, 0).getDate();
+    }
     static getDateFormatted(date){
         var fullDate = date;
         //console.log(fullDate);
@@ -302,4 +305,40 @@ class DateHelper{
 
         return ((date1 - date2) / 36e5);
     }
+    static isInAWeekAhead(date1, date2){
+        var weekday = this.shiftWeekday(date1.getDay());
+        var startOfNextWeek = new Date(date1.getTime());
+        startOfNextWeek.setDate(startOfNextWeek.getDate() - weekday + 7);
+        startOfNextWeek.setHours(0,0,0,0)
+
+        if(date2 >=  startOfNextWeek){
+            return true;
+        }
+        return false;
+    }
+    static isInSameWeek(date1, date2){
+        var weekday = this.shiftWeekday(date1.getDay());
+        var startOfThisWeek = new Date(date1.getTime());
+
+        startOfThisWeek.setDate(startOfThisWeek.getDate() - weekday);
+        startOfThisWeek.setHours(0,0,0,0)
+
+
+        if(date2 >=  startOfThisWeek && !this.isInAWeekAhead(date1, date2)){
+            return true;
+        }
+        return false;
+    }
+    static shiftWeekday(weekdayInput){
+        var weekday = weekdayInput;
+        weekday--;
+        weekday = weekday === -1 ? 6 : weekday;
+        return weekday;
+    }
+    static getWeekNumber (date){
+        var firstOfJan = new Date(date.getFullYear(),0,1);
+        var dayOfInterest = new Date(date.getFullYear(),date.getMonth(),date.getDate());
+        var dayOfYear = ((dayOfInterest - firstOfJan +1)/86400000);
+        return Math.ceil(dayOfYear/7)
+    };
 }

@@ -9,13 +9,16 @@
     <!--delete this-->
     <script src="testFile.js"></script>
     <!--delete this end-->
+
+    <!--constants -->
+    <script src="enums.js"></script>
     <!-- classes -->
     <script src="MessageData.js"></script>
     <script src="Message.js"></script>
     <script src="DateHelper.js"></script>
     <script src="MessageDay.js"></script>
     <script src="MessageHour.js"></script>
-    <script src="MessageMinute.js"></script>
+
     <script src="FilterProperties.js"></script>
     <!-- classes end-->
     <script src="lineChart1.js"></script>
@@ -24,7 +27,14 @@
     <script src="bubbleChart1.js"></script>
     <script src="gaugeChart3.js"></script>
     <script src="menuActions.js"></script>
+
+    <script src="MessageHandler.js"></script>
+    <script src="DataContainer.js"></script>
+    <script src="TimeBasedContainer.js"></script>
+
     <script src="main.js"></script>
+
+
 
 
     <script type='text/javascript'>
@@ -35,7 +45,7 @@
             initVariables6();
             initVariables4();
 
-            initGraph1(getbeginOfDay(new Date()), getendOfDay(new Date()));
+            initGraph1(0, 24);
             //initGraph2();
             initGraph3();
             initGraph4();
@@ -46,7 +56,7 @@
         }
 
         $(document).ready(function () {
-            $.getScript("menuActions.js");
+           // $.getScript("menuActions.js");
 
             //*************************************************//
 
@@ -57,6 +67,7 @@
             });
             setProperties();
             setTime();
+
         });
 function setTime() {
 
@@ -123,9 +134,14 @@ function setTime() {
     <div style="width:150px; height: 100%; float: left">
         <form id="radiob">
 
-            <input class="update zeitspanne" type="radio" name="zeitspanne" value="2" checked/> Tagesbeginn
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="2"/> Tagesbeginn
             <br/>
-            <input class="update zeitspanne" type="radio" name="zeitspanne" value="1"/> Stundenbeginn
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="3" checked/> Wochenbeginn
+            <br/>
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="4" checked/> Monatsbeginn
+            <br/>
+            <input class="update zeitspanne" type="radio" name="zeitspanne" value="5" checked/> Jahresbeginn
+
         </form>
     </div>
 
