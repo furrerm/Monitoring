@@ -341,4 +341,101 @@ class DateHelper{
         var dayOfYear = ((dayOfInterest - firstOfJan +1)/86400000);
         return Math.ceil(dayOfYear/7)
     };
+    static getStartInMillisFromEnum(timeOfInterestEnumValue, dateToTest){
+        if(!timeOfInterestEnumValue){
+            throw new Error('Season is not defined')
+        }
+        var dateNow = new Date(dateToTest.getTime());
+        var startOfPeriodDate = new Date(dateToTest.getTime());
+        var endOfPeriodDate = new Date(startOfPeriodDate.getTime());
+        switch(timeOfInterestEnumValue){
+
+            case TimeOfInterest.HOUR:
+                startOfPeriodDate.setHours(dateNow.getHours(),0,0,0);
+                endOfPeriodDate.setHours(TimeOfInterest.HOUR.ENTITIES,0,0,0)
+                break;
+            case TimeOfInterest.DAY:
+                startOfPeriodDate.setHours(0,0,0,0);
+                endOfPeriodDate.setHours(TimeOfInterest.DAY.ENTITIES,0,0,0)
+                break;
+            case TimeOfInterest.WEEK:
+                startOfPeriodDate.setDate(dateNow.getDate()-DateHelper.shiftWeekday(dateNow.getDay()));
+                startOfPeriodDate.setHours(0,0,0,0);
+                endOfPeriodDate.setDate(startOfPeriodDate.getDate()+TimeOfInterest.WEEK.ENTITIES);
+                endOfPeriodDate.setHours(0,0,0,0);
+                break;
+            case TimeOfInterest.MONTH:
+                startOfPeriodDate.setDate(1);
+                startOfPeriodDate.setHours(0,0,0,0);
+                endOfPeriodDate.setDate(TimeOfInterest.MONTH.ENTITIES);
+                endOfPeriodDate.setHours(0,0,0,0);
+                break;
+            case TimeOfInterest.YEAR:
+                startOfPeriodDate.setMonth(0);
+                startOfPeriodDate.setDate(1);
+                startOfPeriodDate.setHours(0,0,0,0);
+
+
+                endOfPeriodDate.setMonth(TimeOfInterest.YEAR.ENTITIES);
+                endOfPeriodDate.setDate(1);
+                endOfPeriodDate.setHours(0,0,0,0);
+                break;
+
+        }
+        console.log(startOfPeriodDate);
+        return {von: startOfPeriodDate.getTime(), bis: endOfPeriodDate.getTime()};
+    }
+
+
+    static getSubTimeRangesInMillis(timeOfInterestEnumValue, bezugsdatum){
+
+        var startOfPeriodDate = new Date(bezugsdatum.getTime());
+        var startOfSubPeriodDate = new Date(bezugsdatum.getTime());
+        var arrayWithTimeTuples = [];
+        switch(timeOfInterestEnumValue){
+
+
+            case TimeOfInterest.DAY:
+
+                for(var i = 0; i < TimeOfInterest.DAY.ENTITIES; ++i){
+                    startOfSubPeriodDate.setHours(i,0,0,0);
+                    arrayWithTimeTuples[i] = startOfSubPeriodDate.getTime();
+                }
+
+                break;
+            case TimeOfInterest.WEEK:
+                startOfPeriodDate.setDate(startOfPeriodDate.getDate()-DateHelper.shiftWeekday(startOfPeriodDate.getDay()));
+                startOfSubPeriodDate.setHours(0,0,0,0);
+
+                for(var i = 0; i < TimeOfInterest.WEEK.ENTITIES; ++i){
+                    startOfSubPeriodDate.setDate(startOfPeriodDate.getDate()+i);
+                    arrayWithTimeTuples[i] = startOfSubPeriodDate.getTime();
+                }
+                break;
+            case TimeOfInterest.MONTH:
+
+                startOfSubPeriodDate.setHours(0,0,0,0);
+
+                for(var i = 0; i < TimeOfInterest.MONTH.ENTITIES; ++i){
+                    startOfSubPeriodDate.setDate(1+i);
+
+                    arrayWithTimeTuples[i] = startOfSubPeriodDate.getTime();
+                }
+                break;
+            case TimeOfInterest.YEAR:
+                startOfSubPeriodDate.setMonth(0);
+                startOfSubPeriodDate.setDate(1);
+                startOfSubPeriodDate.setHours(0,0,0,0);
+
+                for(var i = 0; i < TimeOfInterest.YEAR.ENTITIES; ++i){
+                    startOfSubPeriodDate.setMonth(i);
+
+                    arrayWithTimeTuples[i] = startOfSubPeriodDate.getTime();
+                }
+                break;
+
+        }
+        console.log(arrayWithTimeTuples);
+        return arrayWithTimeTuples;
+    }
 }

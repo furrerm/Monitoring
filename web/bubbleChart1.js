@@ -4,7 +4,7 @@ data5 = [
     [[0, 0, 0, '', 1990, 0], [1, 0, 0, '', 1990, 1], [2, 0, 0, '', 1990, 2], [3, 0, 0, '', 1990, 3], [4, 0, 0, '', 1990, 4], [5, 0, 0, '', 1990, 5], [6, 0, 0, '', 1990, 6], [7, 0, 0, '', 1990, 7], [8, 0, 0, '', 1990, 8], [9, 0, 0, '', 1990, 9], [10, 0, 0, '', 1990, 10], [11, 0, 0, '', 1990, 11]],
 
 ];
-var xData = ['    7 ', '   8  ', '  9   ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     '];
+var xData = ['     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     ', '     '];
 
 function initGraph5() {
 
@@ -140,7 +140,10 @@ function setDataValue5(messageDataArray) {
                 }
             },
             label:{
-                show: true
+                show: true,
+                formatter: function (param) {
+                    return param.data[2];
+                },
             },
             hoverAnimation:false,
             itemStyle: {
@@ -151,3 +154,11 @@ function setDataValue5(messageDataArray) {
         }]
     })
 };
+
+function getSymbolArray(array){
+    var arr = [];
+    for(var i = 0; i < array.length; ++i){
+        arr.push(array[i][1]);
+    }
+    return arr;
+}

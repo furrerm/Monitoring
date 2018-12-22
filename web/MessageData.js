@@ -6,7 +6,6 @@ class MessageData {
         this.gaugeChart1Data = 0;
         this.gaugeChart2Data = 0;
         this.gaugeChart3Data = 0;
-        //[entry Number, z-axe, value = bubble size, bubble-label, type, x-label, date]
         this.bubbleChart1Data = [
             [[0, 0, 0, '', 0, 0, new Date(2000, 0, 0, 0, 0, 0, 0)], [1, 0, 0, '', 0, 1, new Date(2000, 0, 0, 0, 0, 0, 0)], [2, 0, 0, '', 0, 2, new Date(2000, 0, 0, 0, 0, 0, 0)], [3, 0, 0, '', 0, 3, new Date(2000, 0, 0, 0, 0, 0, 0)], [4, 0, 0, '', 0, 4, new Date(2000, 0, 0, 0, 0, 0, 0)], [5, 0, 0, '', 0, 5, new Date(2000, 0, 0, 0, 0, 0, 0)], [6, 0, 0, '', 0, 6, new Date(2000, 0, 0, 0, 0, 0, 0)], [7, 0, 0, '', 0, 7, new Date(2000, 0, 0, 0, 0, 0, 0)], [8, 0, 0, '', 0, 8, new Date(2000, 0, 0, 0, 0, 0, 0)], [9, 0, 0, '', 0, 9, new Date(2000, 0, 0, 0, 0, 0, 0)], [10, 0, 0, '', 0, 10, new Date(2000, 0, 0, 0, 0, 0, 0)], [11, 0, 0, '', 0, 11, new Date(2000, 0, 0, 0, 0, 0, 0)]],
         ];

@@ -25,17 +25,6 @@ async function asyncReaderFunc(msg) {
             drawGraph1(messageHandler.getLineChartArray());
             setDataValue5(messageHandler.getBubbleChartArray());
 
-/*
-            messageDataContainer.addSingleMessage(message);
-
-            drawGraph1(messageDataContainer);
-
-            setDataValue5(messageDataContainer);
-
-            updateGauge3(messageDataContainer.gaugeChart1Data);
-            updateGauge6(messageDataContainer.gaugeChart2Data);
-            updateGauge4(messageDataContainer.gaugeChart3Data);
-            */
         }
         else {
             let messageCounter = obj.length;

@@ -22,13 +22,13 @@ console.log(this.label);
 
     save(message) {
         if (this.properties.timeOfInterest === TimeOfInterest.YEAR) {
-            this.timeBasedContainers[ message.zeitstempelDate.getMonth()].counter++;
+            this.timeBasedContainers[ message.zeitstempelDate.getMonth()].counter += message.out;
         } else if (this.properties.timeOfInterest === TimeOfInterest.MONTH) {
-            this.timeBasedContainers[ message.zeitstempelDate.getDate() - 1].counter++;
+            this.timeBasedContainers[ message.zeitstempelDate.getDate() - 1].counter  += message.out;
         } else if (this.properties.timeOfInterest === TimeOfInterest.WEEK) {
-            this.timeBasedContainers[ DateHelper.shiftWeekday(message.zeitstempelDate.getDay())].counter++;
+            this.timeBasedContainers[ DateHelper.shiftWeekday(message.zeitstempelDate.getDay())].counter  += message.out;
         } else if (this.properties.timeOfInterest === TimeOfInterest.DAY) {
-            this.timeBasedContainers[ message.zeitstempelDate.getHours()].counter++;
+            this.timeBasedContainers[ message.hour].counter  += message.out;
         }
     }
 }

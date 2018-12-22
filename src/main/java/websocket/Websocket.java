@@ -1,5 +1,7 @@
 package websocket;
 
+import dtos.Incoming;
+import dtos.Outgoing;
 import entities.DataEntity;
 import entities.EntityRefiner;
 import entities.EntityRefinerImpl;
@@ -44,30 +46,53 @@ public class Websocket {
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
-        EntityRefiner refiner = new EntityRefinerImpl();
-        Set<sender.MessageData> messages = refiner.entitiesToMessageData(getEntitiesFromBegin());
-        topicListener.getSender().send(messages, sessionInformation.getSession());
+        Filter filter = new Filter(message);
+
+        Incoming incoming = getEntitiesFromBegin(filter);
+
+        topicListener.getSender().send(incoming.toJsonString(), sessionInformation.getSession());
+
+        List<Outgoing> outgoings = getOutgoings(filter);
+        System.out.println("outgoing Print");
+        for(Outgoing outgoing: outgoings){
+            System.out.println(outgoing.getTimestamp());
+            System.out.println(outgoing.getOutgoing());
+            topicListener.getSender().send(outgoing.toJsonString(), sessionInformation.getSession());
+        }
 
     }
 
-    private Set<DataEntity> getEntitiesFromBegin(){
+    private Incoming getEntitiesFromBegin(Filter filter){
 
-        List<DataEntity> list = null;
+        System.out.println("pre pre query");
+        Incoming incoming = null;
         try {
             InitialContext ctx = new InitialContext();
 
             dataTransmissionBean libraryBean1 =
                     (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
-            list = libraryBean1.saveIt();
+            incoming = libraryBean1.saveIt(filter);
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        Set<DataEntity> entities = new HashSet<>(list);
+        //Set<DataEntity> entities = new HashSet<>(list);
 
-        //SortedSet<DataEntity> sortedEntities = new TreeSet<>(new EntityComparatorByTime());
-        //sortedEntities.addAll(entities);
-        return entities;
+        return incoming;
     }
 
+    private List<Outgoing> getOutgoings(Filter filter){
 
+        System.out.println("pre pre query");
+        List<Outgoing> outgoings = null;
+        try {
+            InitialContext ctx = new InitialContext();
+
+            dataTransmissionBean libraryBean1 =
+                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+            outgoings = libraryBean1.getOutgoings(filter);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return outgoings;
+    }
 }

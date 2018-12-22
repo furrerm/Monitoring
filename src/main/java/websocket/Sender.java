@@ -63,6 +63,15 @@ public class Sender implements MessageListener {
         }
         System.out.println("session info = after is open");
     }
+    public void send(JsonObject jsonObject, Session session){
+        if (session.isOpen()) {
+            try {
+                session.getBasicRemote().sendBinary(ByteBuffer.wrap(jsonObject.toString().getBytes()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void send(Set<sender.MessageData> messages, Session session) {
 
@@ -88,7 +97,6 @@ public class Sender implements MessageListener {
     private JsonObject createJsonString(sender.MessageData msg) {
 
         try {
-
 
             JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
 

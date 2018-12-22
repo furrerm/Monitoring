@@ -34,20 +34,14 @@ $( "#time2" ).click(function() {
 });
 */
 
+var filterDataMessage;
 $(document).ready(function () {
 
     $('#toggle').click(function() {
-        if($('#toggle').is(':checked')) {
-            console.log("is checked");
-            //sendMessage("message zum test und wieder zu loeschen");
+        if(!$('#toggle').is(':checked')) {
+            updateProperties();
+            sendMessage(filterDataMessage);
         }
-    });
-    $(".update").click(function () {
-
-
-        updateProperties();
-        //sendMessage("message zum test und wieder zu loeschen");
-
     });
 });
 function updateProperties(){
@@ -83,6 +77,20 @@ function updateProperties(){
     }
     $.cookie("guis", JSON.stringify(selectedGuis));
     $.cookie("zeitspanne", JSON.stringify(timeOfInterestId));
+
+    //create Message
+    filterDataMessage = {};
+    filterDataMessage.guis = guis;
+    filterDataMessage.koerbe = koerbe;
+
+    var period = DateHelper.getStartInMillisFromEnum(timeOfInterest,new Date());
+    filterDataMessage.timeOfInterest = period.von;
+    filterDataMessage.timeOfInterestEnd = period.bis;
+
+    filterDataMessage.subTimeList = DateHelper.getSubTimeRangesInMillis(timeOfInterest,new Date());
+    filterDataMessage = JSON.stringify(filterDataMessage).replace(/\s/g, '');
+
+    console.log(filterDataMessage);
 }
 
 function getDateFormatted(date) {

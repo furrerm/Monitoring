@@ -17,6 +17,7 @@ public class DataEntity {
     private Integer korbStand;
     private Byte outgoing;
     private Byte incoming;
+    private String uuid;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -165,5 +166,15 @@ public class DataEntity {
         result = 31 * result + (outgoing != null ? outgoing.hashCode() : 0);
         result = 31 * result + (incoming != null ? incoming.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "uuid", nullable = false, length = 45)
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

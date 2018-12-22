@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @MessageDriven(mappedName = "Topic1", activationConfig = {
 
@@ -40,19 +41,27 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                 Dispatcher dispatcher = Dispatcher.getInstance();
                 dispatcher.sendMessage(msg);
 
-                entities.DataEntity entity = new entities.DataEntity();
-                entity.setKorb(msg.getKorb());
-                entity.setTime(msg.getTime());
-                entity.setGui(msg.getGui());
-                entity.setStationaer(msg.getStationaer());
-                entity.setAmbulant(msg.getAmbulant());
-                entity.setPlz(msg.getPlz());
-                entity.setPartnerartObergruppe(msg.getPartnerartObergruppe());
-                entity.setKorbStand(msg.getKorbStand());
-                entity.setOutgoing(msg.getOut());
-                entity.setIncoming(msg.getIn());
+                for(int i = 0; i < 1; ++i) {
 
-                entityManager.persist(entity);
+                    UUID uuid = UUID.randomUUID();
+                    String randomUUIDString = uuid.toString();
+                    Timestamp t = new Timestamp(msg.getTime().getTime()+1000*i);
+
+                    entities.DataEntity entity = new entities.DataEntity();
+                    entity.setUuid(randomUUIDString);
+                    entity.setKorb(msg.getKorb());
+                    entity.setTime(t);
+                    entity.setGui(msg.getGui());
+                    entity.setStationaer(msg.getStationaer());
+                    entity.setAmbulant(msg.getAmbulant());
+                    entity.setPlz(msg.getPlz());
+                    entity.setPartnerartObergruppe(msg.getPartnerartObergruppe());
+                    entity.setKorbStand(msg.getKorbStand());
+                    entity.setOutgoing(msg.getOut());
+                    entity.setIncoming(msg.getIn());
+
+                    entityManager.persist(entity);
+                }
 
 
             } else {

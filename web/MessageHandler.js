@@ -5,7 +5,7 @@ class MessageHandler {
     }
 
     save(message) {
-        this.dataContainer.save(message);
+            this.dataContainer.save(message);
     }
     getGauge1(){
         if(typeof this.dataContainer.incoming !== 'undefined' && this.dataContainer.incoming.counter !== 'undefined'){
@@ -53,22 +53,28 @@ class MessageHandler {
         ];
 
         var bubbleChartXAxe = [];
-        var maxValue = 0;
+        var maxValue;
         if(typeof this.dataContainer.outgoing !== 'undefined' && this.dataContainer.outgoing.timeBasedContainers !== 'undefined') {
             var containers = this.dataContainer.outgoing.timeBasedContainers;
             var containersRefinedForBubbleArray = this.cutLeadingZerosUntilLengthOfTwelve(containers);
             for (var i = 0; i < containersRefinedForBubbleArray.length; ++i) {
                 bubbleChart1Data[0].push([i, 0, 0, '', 0, 0, new Date(2000, 0, 0, 0, 0, 0, 0)]);
                 bubbleChartXAxe.push(containersRefinedForBubbleArray[i].label);
-                //bubbleChartXAxe[i] = containersRefinedForBubbleArray[i].label;
-                bubbleChart1Data[0][i][1] = containersRefinedForBubbleArray[i].counter;
+                //bubbleChart1Data[0][i][1] = containersRefinedForBubbleArray[i].counter;
                 bubbleChart1Data[0][i][2] = containersRefinedForBubbleArray[i].counter;
                 bubbleChart1Data[0][i][3] = bubbleChart1Data[0][i][1].toString();
             }
         }
         maxValue = this.getMaxCounterInTimeBasedContainers(containersRefinedForBubbleArray);
         bubbleChart1Data.push(bubbleChartXAxe);
-        bubbleChart1Data.push(maxValue)
+        bubbleChart1Data.push(maxValue);
+
+        console.log(bubbleChart1Data[0]);
+        if(typeof bubbleChart1Data[0] === 'undefined'){
+            bubbleChart1Data[0].push([0, 0, 0, '', 0, 0, new Date(2000, 0, 0, 0, 0, 0, 0)]);
+            bubbleChartXAxe.push(containersRefinedForBubbleArray[i].label);
+        }
+
         return bubbleChart1Data;
     }
     cutLeadingZerosUntilLengthOfTwelve(arrayToCut){
