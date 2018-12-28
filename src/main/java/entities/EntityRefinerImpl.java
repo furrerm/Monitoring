@@ -8,7 +8,7 @@ import java.util.Set;
 public class EntityRefinerImpl implements EntityRefiner{
 
     private sender.MessageData entityToMessageData(DataEntity dataEntity) {
-        sender.MessageData message = new MessageData();
+        sender.MessageData message = new MessageData(dataEntity.getUuid());
         message.setTime(dataEntity.getTime());
 
         message.setKorb(dataEntity.getKorb());

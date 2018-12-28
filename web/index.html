@@ -3,38 +3,32 @@
 <head>
     <title>$Title$</title>
     <link rel="stylesheet" type="text/css" href="dashboardStyles.css">
-    <script src="jquery-3.3.1.js"></script>
-    <script src="echarts.js"></script>
-    <script src="jquery.cookie.js"></script>
-    <!--delete this-->
-    <script src="testFile.js"></script>
-    <!--delete this end-->
+    <script src="externalResources/jquery-3.3.1.js"></script>
+    <script src="externalResources/echarts.js"></script>
+    <script src="externalResources/jquery.cookie.js"></script>
+
 
     <!--constants -->
-    <script src="enums.js"></script>
+    <script src="dataContainer/enums.js"></script>
     <!-- classes -->
-    <script src="MessageData.js"></script>
-    <script src="Message.js"></script>
+    <script src="dataContainer/Message.js"></script>
     <script src="DateHelper.js"></script>
-    <script src="MessageDay.js"></script>
-    <script src="MessageHour.js"></script>
 
-    <script src="FilterProperties.js"></script>
+
+    <script src="dataContainer/FilterProperties.js"></script>
     <!-- classes end-->
-    <script src="lineChart1.js"></script>
-    <script src="gaugeChart1.js"></script>
-    <script src="gaugeChart2.js"></script>
-    <script src="bubbleChart1.js"></script>
-    <script src="gaugeChart3.js"></script>
+    <script src="charts/lineChart1.js"></script>
+    <script src="charts/gaugeChart1.js"></script>
+    <script src="charts/gaugeChart2.js"></script>
+    <script src="charts/bubbleChart1.js"></script>
+    <script src="charts/gaugeChart3.js"></script>
     <script src="menuActions.js"></script>
 
-    <script src="MessageHandler.js"></script>
-    <script src="DataContainer.js"></script>
-    <script src="TimeBasedContainer.js"></script>
+    <script src="dataContainer/MessageHandler.js"></script>
+    <script src="dataContainer/DataContainer.js"></script>
+    <script src="dataContainer/TimeBasedContainer.js"></script>
 
     <script src="main.js"></script>
-
-
 
 
     <script type='text/javascript'>
@@ -56,7 +50,7 @@
         }
 
         $(document).ready(function () {
-           // $.getScript("menuActions.js");
+            // $.getScript("menuActions.js");
 
             //*************************************************//
 
@@ -67,27 +61,87 @@
             });
             setProperties();
             setTime();
+            rollKoerbe();
 
         });
-function setTime() {
 
-    var weekday = new Array(7);
-    weekday[0] =  "Sonntag";
-    weekday[1] = "Montag";
-    weekday[2] = "Dienstag";
-    weekday[3] = "Mittwoch";
-    weekday[4] = "Donnerstag";
-    weekday[5] = "Freitag";
-    weekday[6] = "Samstag";
-
+        function setTime() {
 
 
             setInterval(function () {
                 d = new Date();
+                console.log(DateHelper.getDateStringForPrint(d));
+                $('#timeLabel').html(DateHelper.getDateStringForPrint(d));
+                $('#zeitraumLabel').html(DateHelper.getDateStringForPrintForFilterContainer(d, filterProperties));
 
-                $('#timeLabel').html(weekday[d.getDay()]+" "+d.getUTCDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+"&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+d.getHours()+":"+d.getMinutes());
             }, 1000);
         }
+
+        function rollKoerbe() {
+            var koerbeArray = filterProperties.koerbe.slice();
+            var start = 0;
+            var end = 11;
+            var activeKoerbe = koerbeArray.slice(0, 11);
+            var marginTop = 0;
+
+            setInterval(function () {
+                if(koerbeArray !== filterProperties.koerbe){
+                    koerbeArray = filterProperties.koerbe;
+                    activeKoerbe = koerbeArray.slice(0, 11);
+                    marginTop = 0;
+                    start = 0;
+                    end = 11;
+
+                    $(".korbText").remove();
+                    for (var i = 0; i < activeKoerbe.length; ++i) {
+
+                        var str = activeKoerbe[i];
+                        $("#korbFilterAnzeige").append("<p class = korbText>" + str + "</p>");
+                    }
+                }
+                if (koerbeArray.length >= 11) {
+                    ++marginTop;
+                    $(".korbText").css("top", "-" + marginTop + "px");
+                    console.log($(".korbText").css("height").substring(0, 2));
+                    if (marginTop >= $(".korbText").css("height").substring(0, 2)) {
+
+                        console.log("bigger");
+                        console.log("start = "+start);
+                        console.log("end = "+end);
+                        marginTop = 0;
+                        ++start;
+                        if (start >= koerbeArray.length) {
+                            start = 0;
+                        }
+                        ++end;
+                        if (end > koerbeArray.length) {
+                            end = 1;
+                        }
+                        if(end > start){
+                            activeKoerbe = koerbeArray.slice(start, end);
+                        } else{
+                            //activeKoerbe = koerbeArray.slice(start, koerbeArray.length);
+                            //activeKoerbe.push( koerbeArray.slice(0, end));
+                            activeKoerbe = $.merge(koerbeArray.slice(start, koerbeArray.length), koerbeArray.slice(0, end));
+                        }
+
+                        console.log(activeKoerbe);
+
+
+
+
+                        $(".korbText").remove();
+                        for (var i = 0; i < activeKoerbe.length; ++i) {
+
+                            var str = activeKoerbe[i];
+                            $("#korbFilterAnzeige").append("<p class = korbText>" + str + "</p>");
+                        }
+                    }
+                }
+
+            }, 100);
+        }
+
         window.onload = codeAddress;
     </script>
 
@@ -128,7 +182,7 @@ function setTime() {
 <div class="container" style="border-bottom: lightgray; border-bottom-style: solid; border-bottom-width: 2px">
 
 </div>
-<p id = "timeLabel" style = "color: gray; width: 400px; position: absolute; top:25px; left:50px"></p>
+<p id="timeLabel" style="color: gray; width: 400px; position: absolute; top:25px; left:50px"></p>
 
 <div class="message" style="background-color: #0D1A46">
     <div style="width:150px; height: 100%; float: left">
@@ -156,14 +210,29 @@ function setTime() {
             <option class="update" value="Korb5">Korb5</option>
             <option class="update" value="Korb6">Korb6</option>
             <option class="update" value="Korb7">Korb7</option>
+            <option class="update" value="Korb8">Korb8</option>
+            <option class="update" value="Korb9">Korb9</option>
+            <option class="update" value="Korb10">Korb10</option>
+            <option class="update" value="Korb11">Korb11</option>
+            <option class="update" value="Korb12">Korb12</option>
+            <option class="update" value="Korb13">Korb13</option>
+            <option class="update" value="Korb14">Korb14</option>
+            <option class="update" value="Korb15">Korb15</option>
+            <option class="update" value="Korb16">Korb16</option>
+            <option class="update" value="Korb17">Korb17</option>
+            <option class="update" value="Korb18">Korb18</option>
+            <option class="update" value="Korb19">Korb19</option>
+            <option class="update" value="Korb20">Korb20</option>
+            <option class="update" value="Korb21">Korb21</option>
+            <option class="update" value="Korb22">Korb22</option>
+            <option class="update" value="Korb23">Korb23</option>
         </select>
 
     </div>
 
     <div style="width:150px; height: 100%; float: left">
 
-        <input class="update guicheckboxes" type="checkbox" name="gui" value="0"/> gui 0
-        <br/>
+
         <input class="update guicheckboxes" type="checkbox" name="gui" value="1"/> gui 1
         <br/>
         <input class="update guicheckboxes" type="checkbox" name="gui" value="2"/> gui 2
@@ -173,27 +242,86 @@ function setTime() {
         <input class="update guicheckboxes" type="checkbox" name="gui" value="4"/> gui 4
         <br/>
         <input class="update guicheckboxes" type="checkbox" name="gui" value="5"/> gui 5
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="6"/> gui 5.5
+        <br/>
+        <input class="update guicheckboxes" type="checkbox" name="gui" value="7"/> gui 7
 
     </div>
 </div>
-<div style = "width:30%; height: 60%; float: left;">
-    <div  style = "height: 8%;">
+<div style="width:30%; height: 60%; float: left;">
+    <div style="height: 8%;">
 
     </div>
-    <div class = "topBoarder" style = "height: 15%;">
-        <h2 class = filterTitels > Zeitraum</h2>
-        <p class = filterLabels  ></p>
+    <div class="topBoarder" style="height: 15%;">
+        <h2 class=filterTitels> Zeitraum</h2>
+        <p class=filterLabels id="zeitraumLabel"></p>
     </div>
-    <div class = "topBoarder" style = "height: 26%">
-        <h2 class = filterTitels> Aktive Gui's</h2>
-        <p class = filterLabels  ></p>
+    <div class="topBoarder" style="height: 26%">
+
+        <div style=" width: 100%; height: 60px">
+            <h2 class=filterTitels> Aktive Gui's</h2>
+            <p class=filterLabels id="guiLabel"></p>
+        </div>
+        <div class=round>
+            <div class=guiDiv>
+                <div class=guiDivLeft>
+                    <span id=gui1 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeLeft"> gui 1</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivCenter>
+                    <span id=gui2 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeCenter"> gui 2</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivRight>
+                    <span id=gui3 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeRight"> gui 3</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivLeft>
+                    <span id=gui4 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeLeft"> gui 4</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivCenter>
+                    <span id=gui5 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeCenter"> gui 5</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivRight>
+                    <span id=gui6 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeRight"> gui 5.5</p>
+                </div>
+            </div>
+            <div class=guiDiv>
+                <div class=guiDivLeft>
+                    <span id=gui7 class=pointForGuiAnzeige></span>
+                    <p class="guiFilterAnzeige guiFilterAnzeigeLeft"> gui 7</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class = "topBoarder" style = "height: 51%;">
-        <h2 class = filterTitels> Aktive Arbeitskoerbe</h2>
-        <p class = filterLabels  ></p>
+    <div class="topBoarder" style="height: 51%;">
+        <div style=" width: 100%; height: 60px">
+            <h2 class=filterTitels> Aktive Arbeitskoerbe</h2>
+            <p class=filterLabels id="korbLabel"></p>
+        </div>
+        <div style="border: 2px solid black; width: 100%; height: calc(100% - 110px)">
+            <div id="korbFilterAnzeige"
+                 style="margin-left: 5%; margin-top: 2%; width: 90%; height: 90%; border: 2px solid black; overflow: hidden">
+                <p class="korbText"></p>
+            </div>
+        </div>
     </div>
 </div>
-<div style = "width:70%; height: 60%; float: left">
+<div style="width:70%; height: 60%; float: left">
     <div style="height: 60% ;width:100%;float: left">
         <div style="width:33%; height:100%;float:left;">
             <div style="width:100%; height:1%; float:left"></div>
@@ -243,8 +371,6 @@ function setTime() {
 </div>
 
 
-
-
 <div style="width:100%; height:30%;float:left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
 
     <div style=" width:100%; height:10%;float:left;">
@@ -254,7 +380,7 @@ function setTime() {
     </div>
 
     <div style=" height: 90%; width:100%;  ">
-        <div style = " height: 100%; width: 100%;   " id="main5"></div>
+        <div style=" height: 100%; width: 100%;   " id="main5"></div>
     </div>
 
 </div>

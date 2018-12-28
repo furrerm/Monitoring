@@ -7,48 +7,116 @@ html {
     padding: 0;
     margin: 0;
 
-
 }
-.filterLabels{
+
+.filterLabels {
     /*border: 0px solid ;*/
     border-radius: 5px;
     margin-right: 20px;
     margin-top: 10px;
     padding-top: 10px;
-    float:right;
-    display: inline;
+    float: right;
+    /*display: inline;*/
     text-align: center;
     background-color: #00a7e0;
     width: 100px;
     height: 30px;
     color: white;
 }
-.filterTitels{
+
+.filterTitels {
     float: left;
     margin-left: 10px;
     margin-top: 10px;
-    display:inline;
+    /*display:inline;*/
 }
-h2{
-    font-family:"Calibri";
+
+.pointForGuiAnzeige {
+    border-radius: 50%;
+
+    margin-right: 20px;
+    float: left;
+    margin-top: 10px;
+    background-color: lightgray;
+    width: 15px;
+    height: 15px;
+    color: white;
+
+}
+.korbText{
+    position: relative;
+    height: 1em;
+}
+
+.guiFilterAnzeige {
+    margin-top: 10px;
+
+}
+
+.guiDiv {
+    width: 33%;
+    heigth: 40px;
+
+    float: left;
+}
+
+.guiDivLeft {
+    width: 100px;
+
+    float: left;
+    heigth: 100%;
+}
+
+.guiDivCenter {
+    width: 100px;
+    margin-left: calc(50% - 50px);
+
+    float: left;
+    heigth: 100%;
+
+}
+
+.guiDivRight {
+    width: 100px;
+
+    float: right;
+    heigth: 40px;
+}
+
+/*
+.guiFilterAnzeigeLeft{
+    float:left;
+    text-align: left;
+    background-color: coral;
+}
+.guiFilterAnzeigeCenter{
+    float:left;
+    text-align: center;
+}
+.guiFilterAnzeigeRight{
+    float:left;
+    text-align: right;
+}
+*/
+h2 {
+    font-family: "Calibri";
     /*font-size: 25px;*/
     color: #162388;
 }
-body{
+
+body {
     height: 100%;
     background-color: #000000;
     padding: 0;
     margin: 0;
 }
+
 * {
     padding: 0;
     margin: 0;
 }
 
 /* experiments end*/
-
-
-
 
 /* Dropdown Button */
 .dropbtn {
@@ -128,8 +196,6 @@ h1 {
     -webkit-font-smoothing: antialiased;
 }
 
-
-
 .message {
     background: #181818;
     color: #FFF;
@@ -160,8 +226,8 @@ h1 {
 
 #toggle + label {
     position: absolute;
-    top:0px;
-    right:0;
+    top: 0px;
+    right: 0;
     cursor: pointer;
     padding: 10px;
     background: #0D1A46;
@@ -201,14 +267,14 @@ h1 {
 
 #toggle:checked + label {
     background: #1FA8DD;
-    top:250px;
-    right:0;
+    top: 250px;
+    right: 0;
 }
 
 #toggle:checked + label:after {
     content: "Schliessen";
-    top:250px;
-    right:0;
+    top: 250px;
+    right: 0;
 }
 
 /* from here on is toogle menu end*/
@@ -233,6 +299,7 @@ h1 {
     background: -webkit-linear-gradient(to right, #0f9b0f, #000000); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
 .gradient3 {
     /*
     background: #c21500;
@@ -241,8 +308,11 @@ h1 {
    */
     background-color: white;
 }
+
 .topBoarder {
-    border-top: lightgray; border-top-style: solid; border-top-width: 2px
+    border-top: lightgray;
+    border-top-style: solid;
+    border-top-width: 2px
 }
 
 

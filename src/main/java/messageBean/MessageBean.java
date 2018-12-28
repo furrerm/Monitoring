@@ -1,5 +1,6 @@
 package messageBean;
 
+import entities.DataEntity;
 import jmsConnector.Dispatcher;
 
 import javax.annotation.Resource;
@@ -8,6 +9,7 @@ import javax.jms.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -27,7 +29,6 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
 
     @PersistenceContext(unitName = "cssDashboardUnit", type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
-
 
     public void onMessage(Message inMessage) {
 
@@ -62,8 +63,10 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
 
                     entityManager.persist(entity);
                 }
-
-
+            } else if(objectMessage.getObject() instanceof sender.Korbstand){
+                TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k ",entities.KoerbeEntity.class);
+                String korbname = query.getSingleResult().getKorbName();
+                System.out.println("mdb gives = "+korbname);
             } else {
                 System.out.println("wrong type in Bean: ");
             }

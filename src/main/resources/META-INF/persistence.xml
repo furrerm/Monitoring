@@ -6,6 +6,8 @@
         <jta-data-source>jdbc/mysqlressource</jta-data-source>
 
         <class>entities.DataEntity</class>
+        <class>entities.KoerbeEntity</class>
+        <class>entities.KorbstaendeEntity</class>
 
         <properties>
 

@@ -63,6 +63,17 @@ function updateProperties(){
     filterProperties = new FilterProperties(timeOfInterest, koerbe, guis);
     messageHandler = new MessageHandler(filterProperties);
 
+    //update front end
+    //guis
+    $(".pointForGuiAnzeige").css("background-color", "lightgray");
+    for(var i = 0; i < guis.length; ++i){
+
+        var str = "gui"+guis[i];
+        $("#"+str).css("background-color", "#00a7e0");
+    }
+    $("#guiLabel").html(guis.length);
+
+    
     //create cookies
 
     var selectedKoerbe = [];

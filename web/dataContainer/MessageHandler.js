@@ -53,10 +53,11 @@ class MessageHandler {
         ];
 
         var bubbleChartXAxe = [];
+        var containersRefinedForBubbleArray = [];
         var maxValue;
         if(typeof this.dataContainer.outgoing !== 'undefined' && this.dataContainer.outgoing.timeBasedContainers !== 'undefined') {
             var containers = this.dataContainer.outgoing.timeBasedContainers;
-            var containersRefinedForBubbleArray = this.cutLeadingZerosUntilLengthOfTwelve(containers);
+            containersRefinedForBubbleArray = this.cutLeadingZerosUntilLengthOfTwelve(containers);
             for (var i = 0; i < containersRefinedForBubbleArray.length; ++i) {
                 bubbleChart1Data[0].push([i, 0, 0, '', 0, 0, new Date(2000, 0, 0, 0, 0, 0, 0)]);
                 bubbleChartXAxe.push(containersRefinedForBubbleArray[i].label);

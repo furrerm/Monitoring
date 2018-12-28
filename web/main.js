@@ -1,7 +1,10 @@
 var conn;
 var filterProperties = new FilterProperties("2", ["korb1"], ["gui1"]);
 var messageDataContainer;
-var counterblatoclear = 0;
+function inform(){
+    console.log("filter change = "+filterProperties);
+}
+
 
 var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, ["Korb0", "Korb1", "Korb2", "Korb3", "Korb4", "Korb5", "Korb6", "Korb7"], [0, 1, 2, 3, 4, 5]))
 async function asyncReaderFunc(msg) {
@@ -51,7 +54,6 @@ async function asyncReaderFunc(msg) {
 async function connect() {
 
 
-    messageDataContainer = new MessageData();
     conn = new WebSocket("ws://localhost:8384/messageBean1/echo");
     conn.onmessage = (msg) => {
 
@@ -59,28 +61,12 @@ async function connect() {
         asyncReaderFunc(msg.data);
 
 
-        //asyncReaderFunc(msg.data);
         try {
             let cValue = 3;// document.getElementById("out").value;
             //@todo try catch einbauen
 
             if (isJson(msg.data)) {
                 console.log(msg.data);
-                /*
-                                let obj = JSON.parse(msg.data);
-
-                                var message = new Message(obj);
-
-                                messageDataContainer.addSingleMessage(message);
-
-                                drawGraph1(messageDataContainer);
-
-                                setDataValue5(messageDataContainer);
-
-                                updateGauge3(messageDataContainer.gaugeChart1Data);
-                                updateGauge6(messageDataContainer.gaugeChart2Data);
-                                updateGauge4(messageDataContainer.gaugeChart3Data);
-                */
 
             }
         }

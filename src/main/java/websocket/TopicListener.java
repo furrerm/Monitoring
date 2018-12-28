@@ -27,9 +27,6 @@ public class TopicListener  {
         sender = new Sender(session);
 
         this.initialize();
-
-
-
     }
 /*
     public static TopicListener getInstance(SessionInformation session) {
