@@ -1,6 +1,8 @@
 package messageBean;
 
 import entities.DataEntity;
+import entities.KoerbeEntity;
+import entities.KorbstaendeEntity;
 import jmsConnector.Dispatcher;
 
 import javax.annotation.Resource;
@@ -11,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @MessageDriven(mappedName = "Topic1", activationConfig = {
@@ -62,11 +65,28 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                     entity.setIncoming(msg.getIn());
 
                     entityManager.persist(entity);
+
+                    TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k where k.korbName = :korbName",entities.KoerbeEntity.class);
+                    query.setParameter("korbName", msg.getKorb());
+                    List<entities.KoerbeEntity> results = query.getResultList();
+                    if(results.isEmpty()){
+                        KoerbeEntity koerbeEntity = new KoerbeEntity();
+                        koerbeEntity.setKorbName(msg.getKorb());
+                        entityManager.persist(koerbeEntity);
+                    }
                 }
             } else if(objectMessage.getObject() instanceof sender.Korbstand){
-                TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k ",entities.KoerbeEntity.class);
-                String korbname = query.getSingleResult().getKorbName();
-                System.out.println("mdb gives = "+korbname);
+                sender.Korbstand korbstandObject = (sender.Korbstand) objectMessage.getObject();
+                TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k where k.korbName = :korbName",entities.KoerbeEntity.class);
+                query.setParameter("korbName", korbstandObject.getKorb());
+                entities.KoerbeEntity korbEntity = query.getSingleResult();
+                System.out.println("mdb gives = "+korbEntity.getKorbName());
+                KorbstaendeEntity korbstaendeEntity = new KorbstaendeEntity();
+                korbstaendeEntity.setGui(korbstandObject.getGui());
+                korbstaendeEntity.setInhalt(korbstandObject.getKorbstand());
+                korbstaendeEntity.setKoerbeByKorb(korbEntity);
+                korbstaendeEntity.setUpdateTime(korbstandObject.getTime());
+                entityManager.persist(korbstaendeEntity);
             } else {
                 System.out.println("wrong type in Bean: ");
             }

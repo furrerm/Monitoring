@@ -13,6 +13,7 @@
 
             <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/cssDashboard"/>
             <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.allow-zero-id" value="true"/>
         </properties>
 
         <!--

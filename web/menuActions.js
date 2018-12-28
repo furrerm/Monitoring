@@ -72,6 +72,7 @@ function updateProperties(){
         $("#"+str).css("background-color", "#00a7e0");
     }
     $("#guiLabel").html(guis.length);
+    $("#korbLabel").html(koerbe.length);
 
     
     //create cookies

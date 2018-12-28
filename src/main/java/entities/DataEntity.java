@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "data", schema = "cssdashboard", catalog = "")
 public class DataEntity {
+
+
     private long id;
     private Timestamp time;
     private String korb;
@@ -21,6 +23,7 @@ public class DataEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public long getId() {
         return id;
     }

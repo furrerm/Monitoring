@@ -6,18 +6,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "koerbe", schema = "cssdashboard", catalog = "")
 public class KoerbeEntity {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int idkoerbe;
     private String korbName;
 
-    @Id
-    @Column(name = "idkoerbe", nullable = false)
+
     public int getIdkoerbe() {
         return idkoerbe;
     }
 
-    public void setIdkoerbe(int idkoerbe) {
-        this.idkoerbe = idkoerbe;
-    }
+
 
     @Basic
     @Column(name = "korbName", nullable = false, length = 45)

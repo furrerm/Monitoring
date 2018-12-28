@@ -7,21 +7,21 @@ import java.util.Objects;
 @Entity
 @Table(name = "korbstaende", schema = "cssdashboard", catalog = "")
 public class KorbstaendeEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int idkorbstaende;
+
     private int inhalt;
     private Integer gui;
     private Timestamp updateTime;
     private KoerbeEntity koerbeByKorb;
 
-    @Id
-    @Column(name = "idkorbstaende", nullable = false)
+
     public int getIdkorbstaende() {
         return idkorbstaende;
     }
 
-    public void setIdkorbstaende(int idkorbstaende) {
-        this.idkorbstaende = idkorbstaende;
-    }
 
     @Basic
     @Column(name = "inhalt", nullable = false)
