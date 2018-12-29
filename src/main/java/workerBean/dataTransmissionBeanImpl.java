@@ -8,10 +8,12 @@ import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import dtos.Incoming;
 import dtos.Outgoing;
 import entities.DataEntity;
+import entities.KoerbeEntity;
 import websocket.Filter;
 
 @Stateless(name = "dataTransmissionEJB")
@@ -118,6 +120,14 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
             }
         }
         return outgoings;
+    }
+    @Override
+    public List<String> getKoerbe() {
+
+       TypedQuery<String> query = entityManager.createQuery("Select k.korbName from KoerbeEntity k", String.class);
+
+        List<String> koerbe = query.getResultList();
+        return koerbe;
     }
 
     public long count() {

@@ -9,6 +9,7 @@ import jmsConnector.Dispatcher;
 import workerBean.dataTransmissionBean;
 
 import javax.jms.*;
+import javax.json.JsonArray;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.websocket.OnClose;
@@ -36,6 +37,18 @@ public class Websocket {
         topicListener = new TopicListener(sessionInformation);
 
 
+
+        try {
+            InitialContext ctx = new InitialContext();
+
+            dataTransmissionBean libraryBean1 =
+                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+            List<String> list = libraryBean1.getKoerbe();
+            topicListener.getSender().send(list, sessionInformation.getSession());
+
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClose

@@ -34,17 +34,10 @@ async function asyncReaderFunc(msg) {
             console.log(obj);
             console.log(obj.length);
             for (let i = 0; i < messageCounter; ++i) {
-                var message = new Message(obj[i]);
+                console.log(obj[i]);
 
-                messageDataContainer.addSingleMessage(message);
 
-                drawGraph1(messageDataContainer);
-
-                setDataValue5(messageDataContainer);
-
-                updateGauge3(messageDataContainer.gaugeChart1Data);
-                updateGauge6(messageDataContainer.gaugeChart2Data);
-                updateGauge4(messageDataContainer.gaugeChart3Data);
+                $("#korbMultiSelector").append("<option class='update' value="+obj[i]+">" + obj[i] + "</option>");
             }
         }
     }

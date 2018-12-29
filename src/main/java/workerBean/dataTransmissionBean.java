@@ -10,4 +10,5 @@ import java.util.List;
 public interface dataTransmissionBean {
     Incoming saveIt(Filter filter);
     List<Outgoing> getOutgoings(Filter filter);
+    List<String> getKoerbe();
 }

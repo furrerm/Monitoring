@@ -16,6 +16,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Set;
 
 public class Sender implements MessageListener {
@@ -94,6 +95,22 @@ public class Sender implements MessageListener {
         System.out.println("session info = after is open");
     }
 
+    public void send(List<String> messages, Session session) {
+
+        System.out.println("called tl is instance");
+        System.out.println("session info = " + session.isOpen());
+        if (session.isOpen()) {
+
+            try {
+                session.getBasicRemote().sendBinary(ByteBuffer.wrap(createJsonArrayFromString(messages).toString().getBytes()));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("session info = after is open");
+    }
+
     private JsonObject createJsonString(sender.MessageData msg) {
 
         try {
@@ -134,6 +151,23 @@ public class Sender implements MessageListener {
 
             for (sender.MessageData message : messages) {
                 arrayBuilder.add(createJsonString(message));
+            }
+
+            return arrayBuilder.build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    private JsonArray createJsonArrayFromString(List<String> messages) {
+
+        try {
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+            for (String message : messages) {
+                arrayBuilder.add(message);
             }
 
             return arrayBuilder.build();
