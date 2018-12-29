@@ -63,16 +63,18 @@ public class Websocket {
 
         Incoming incoming = getEntitiesFromBegin(filter);
 
-        topicListener.getSender().send(incoming.toJsonString(), sessionInformation.getSession());
+        topicListener.getSender().send(incoming, sessionInformation.getSession());
 
         List<Outgoing> outgoings = getOutgoings(filter);
         System.out.println("outgoing Print");
         for(Outgoing outgoing: outgoings){
             System.out.println(outgoing.getTimestamp());
             System.out.println(outgoing.getOutgoing());
-            topicListener.getSender().send(outgoing.toJsonString(), sessionInformation.getSession());
+            if(outgoing.getUids() != null){
+                outgoing.getUids().keySet().forEach(a -> System.out.println(a));
+            }
+            topicListener.getSender().send(outgoing, sessionInformation.getSession());
         }
-
     }
 
     private Incoming getEntitiesFromBegin(Filter filter){

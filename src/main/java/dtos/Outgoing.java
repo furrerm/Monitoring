@@ -4,13 +4,21 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-public class Outgoing {
+public class Outgoing implements GeneralDTO {
     private long outgoing;
     private Timestamp timestamp;
-    private Set<String> uids;
+    private Map<String, Timestamp> uids;
 
+    public Outgoing(sender.MessageData message){
+        this.outgoing = message.getOut();
+        this.timestamp = message.getTime();
+        this.uids = new HashMap<>();
+        uids.put(message.getUuid(),message.getTime());
+    }
     public Outgoing(long outgoing, Timestamp timestamp) {
         this.outgoing = outgoing;
         this.timestamp = timestamp;
@@ -24,15 +32,22 @@ public class Outgoing {
         return timestamp;
     }
 
-    public Set<String> getUids() {
+    @Override
+    public Map<String, Timestamp> getUids() {
         return uids;
     }
 
-    public void setUids(Set<String> uids) {
+    @Override
+    public void correctAmount(int amountToSubtract) {
+        outgoing-= amountToSubtract;
+    }
+
+    public void setUids(Map<String, Timestamp> uids) {
         this.uids = uids;
     }
 
-    public JsonObject toJsonString(){
+    @Override
+    public JsonObject toJsonString() {
         JsonObject jsonObject = null;
         try {
 

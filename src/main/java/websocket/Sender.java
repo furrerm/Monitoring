@@ -1,5 +1,7 @@
 package websocket;
 
+import dtos.DTOFactory;
+import dtos.GeneralDTO;
 import sender.MessageData;
 
 import javax.jms.JMSException;
@@ -20,12 +22,11 @@ import java.util.List;
 import java.util.Set;
 
 public class Sender implements MessageListener {
-    private SessionInformation session;
+    private SessionInformation sessionInformation;
 
 
-    public Sender(SessionInformation session) {
-        this.session = session;
-
+    public Sender(SessionInformation sessionInformation) {
+        this.sessionInformation = sessionInformation;
     }
 
 
@@ -34,16 +35,17 @@ public class Sender implements MessageListener {
         try {
             if (objectMessage.getObject() instanceof sender.MessageData) {
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
+                DTOFactory dtoFactory = new DTOFactory();
 
-                this.send(msg, session.getSession());
+
+                this.send(dtoFactory.createGeneralDTOFromMessage(msg), sessionInformation.getSession());
 
             }
         } catch (JMSException e) {
             e.printStackTrace();
         }
-
     }
-
+/*
     private void send(sender.MessageData message, Session session) {
 
         System.out.println("called tl is instance");
@@ -64,10 +66,14 @@ public class Sender implements MessageListener {
         }
         System.out.println("session info = after is open");
     }
-    public void send(JsonObject jsonObject, Session session){
+    */
+    public void send(GeneralDTO dto, Session session){
+        System.out.println("befor send");
+        dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
+        JsonObject objectToSend = dto.toJsonString();
         if (session.isOpen()) {
             try {
-                session.getBasicRemote().sendBinary(ByteBuffer.wrap(jsonObject.toString().getBytes()));
+                session.getBasicRemote().sendBinary(ByteBuffer.wrap(objectToSend.toString().getBytes()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

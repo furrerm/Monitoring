@@ -28,16 +28,6 @@ public class TopicListener  {
 
         this.initialize();
     }
-/*
-    public static TopicListener getInstance(SessionInformation session) {
-        if (instance == null) {
-            return new TopicListener(session);
-        }
-        return instance;
-    }
-
-*/
-
 
     public void initialize() {
         // get the initial context

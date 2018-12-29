@@ -32,6 +32,9 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
         Long endOfPeriod = filter.getBis().getTime();
         Timestamp lastMinute = new Timestamp(filter.getBis().getTime()- 60000);
 
+        String guis = filter.getGuis().stream().map(a-> a.toString()).collect(Collectors.joining(","));
+        String koerbe =  filter.getKoerbe().stream().collect(Collectors.joining("','","'","'"));
+
         Query query =
                 entityManager.createNativeQuery("SELECT * FROM " +
                         "((SELECT Count(*) " +
@@ -39,22 +42,24 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                         "WHERE d.incoming = 1 " +
                         "AND d.time >= '" + new Timestamp(startOfPeriod) + "' " +
                         "AND d.time < '" + new Timestamp(endOfPeriod) + "' " +
-                        "AND d.gui in (0,1,2,3,4,5) " +
-                        "AND d.korb in ('Korb0', 'Korb1', 'Korb2', 'Korb3', 'Korb4', 'Korb5', 'Korb6', 'Korb7')) AS A " +
-                        "LEFT OUTER JOIN (SELECT c.uuid FROM data c " +
+                        "AND d.gui in ( "+guis+" )" +
+                        "AND d.korb in ( "+koerbe+" )" +
+                        ") AS A " +
+                        "LEFT OUTER JOIN (SELECT c.uuid, c.time FROM data c " +
                         "WHERE c.incoming = 1 " +
                         "AND c.time >= '" + lastMinute + "' " +
-                        "AND c.gui in (0,1,2,3,4,5) " +
-                        "AND c.korb in ('Korb0', 'Korb1', 'Korb2', 'Korb3', 'Korb4', 'Korb5', 'Korb6', 'Korb7')) AS B on 1=1)");
+                        "AND c.gui in ( "+guis+" )" +
+                        "AND c.korb in ( "+koerbe+" )" +
+                        ") AS B on 1=1)");
 
         List<Object[]> results = query.getResultList();
         Incoming incoming = new Incoming(((Long) results.get(0)[0]), filter.getVon());
 
-        Set<String> uuids = new HashSet<>();
+        Map<String, Timestamp> uuids = new HashMap<>();
 
 
         for (Object[] result : results) {
-            uuids.add((String) result[1]);
+            uuids.put((String) result[1], (Timestamp) result[2]);
         }
         incoming.setUids(uuids);
 
@@ -79,6 +84,10 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
             if (i + 1 == periods.size()) {
                 endOfPeriod = filter.getBis().getTime();
 
+
+                String guis = filter.getGuis().stream().map(a-> a.toString()).collect(Collectors.joining(","));
+                String koerbe =  filter.getKoerbe().stream().collect(Collectors.joining("','","'","'"));
+
                 Query query =
                         entityManager.createNativeQuery("SELECT * FROM " +
                                 "((SELECT Count(*) " +
@@ -86,19 +95,27 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                                 "WHERE d.outgoing = 1 " +
                                 "AND d.time >= '" + new Timestamp(startOfPeriod) + "' " +
                                 "AND d.time < '" + new Timestamp(endOfPeriod) + "' " +
-                                "AND d.gui in (0,1,2,3,4,5) " +
-                                "AND d.korb in ('Korb0', 'Korb1', 'Korb2', 'Korb3', 'Korb4', 'Korb5', 'Korb6', 'Korb7')) AS A " +
-                                "LEFT OUTER JOIN (SELECT c.uuid FROM data c " +
+                                "AND d.gui in ( "+guis+" )" +
+                                "AND d.korb in ( "+koerbe+" )" +
+                                ") AS A " +
+                                "LEFT OUTER JOIN (SELECT c.uuid, c.time FROM data c " +
                                 "WHERE c.outgoing = 1 " +
-                                "AND c.time >= '" + lastMinute + "' " +
-                                "AND c.gui in (0,1,2,3,4,5) " +
-                                "AND c.korb in ('Korb0', 'Korb1', 'Korb2', 'Korb3', 'Korb4', 'Korb5', 'Korb6', 'Korb7')) AS B on 1=1)");
+                                "AND c.time >= '" + new Timestamp(startOfPeriod) + "' " +
+                                "AND c.gui in ( "+guis+" )" +
+                                "AND c.korb in ( "+koerbe+" )" +
+                                ") AS B on 1=1)");
+
+                System.out.println(query.toString());
+
+
 
                 List<Object[]> results = query.getResultList();
                 Outgoing outgoing = new Outgoing(((Long) results.get(0)[0]), new Timestamp(startOfPeriod));
-                Set<String> uuids = new HashSet<>();
+                Map<String, Timestamp> uuids = new HashMap();
                 for (Object[] result : results) {
-                    uuids.add((String) result[1]);
+                    if(result[1] != null){
+                        uuids.put(result[1].toString(),(Timestamp)result[2]);
+                    }
                 }
                 outgoing.setUids(uuids);
                 outgoings.add(outgoing);
