@@ -93,7 +93,36 @@ function initGraph4() {
                 },
 
                 detail : {
+                    formatter: function(counterVariable){
+
+                        if(Math.abs(counterVariable).toString().length > 3){
+
+                            if(Math.abs(counterVariable).toString().length < 7){
+                                counterVariable = counterVariable / (1e3);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Tsd";
+                            } else if (Math.abs(counterVariable).toString().length < 10){
+                                counterVariable = counterVariable / (1e6);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Mio";
+                            } else if (Math.abs(counterVariable).toString().length < 13){
+                                counterVariable = counterVariable / (1e9);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Mia";
+                            } else if (Math.abs(counterVariable).toString().length < 16){
+                                counterVariable = counterVariable / (1e12);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Bio";
+                            } else if (Math.abs(counterVariable).toString().length < 19){
+                                counterVariable = counterVariable / (1e15);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Bia";
+                            }
+                        }
+                        return counterVariable;
+                    },
                     color: '#0D1A46',
+                    offsetCenter: [0,0]
                 },
 
             }
@@ -133,25 +162,16 @@ function initGraph4() {
 }
 
 function updateGauge4(counterVariable) {
-    var maxValue;
-    if(counterVariable <= 10){
-        maxValue = 10;
-    } else if(counterVariable <= 100){
-        maxValue = 100;
-    } else if(counterVariable <= 1000){
-        maxValue = 1000;
-    } else if(counterVariable <= 10000){
-        maxValue = 10000;
-    }
+
+    var exponent = counterVariable.toString().length - 1;
+    var maxValue = Math.pow(10, exponent);
+
 
     var angleX = Math.sin(Math.PI * (counterVariable / maxValue * 2));
     var angleY = Math.cos(Math.PI * (counterVariable / maxValue * 2))*(-1);
 
     globalOption4.series[0].data[0].value = counterVariable;
     globalOption4.series[0].axisLine.lineStyle.color = [[counterVariable / maxValue, '#1FA8DD'],[1, '#0D1A46']];
-    //globalOption4.graphic[0].shape.cx = cx4 - pointRadius4 * angleX;
-    //globalOption4.graphic[0].shape.cy = cy4 - pointRadius4 * angleY;
-
 
     myChart_4.setOption(globalOption4, true);
 };

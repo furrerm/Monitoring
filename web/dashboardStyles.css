@@ -26,7 +26,7 @@ html {
 
 .filterTitels {
     float: left;
-    margin-left: 10px;
+    margin-left: 0;
     margin-top: 10px;
     /*display:inline;*/
 }
@@ -46,23 +46,46 @@ html {
 .korbText{
     position: relative;
     height: 1em;
+
+}
+.blurDiv{
+    /*
+    heigth: 100px;
+    width: 100%;
+    background-color: #dae221;
+    position: relative;
+    */
+
+    height: 25px;
+    width: 100%;
+    color: #4CAF50;
+
+}
+.rightSideContainer{
+    margin-right: 200px;
+}
+.leftSideContainer{
+margin-left:100px;
+}
+#topBlurDiv{
+    background: linear-gradient( rgba(255,255,255,1), rgba(255,255,255,0));
+}
+#bottomBlurDiv{
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,1));
 }
 
 .guiFilterAnzeige {
     margin-top: 10px;
-
 }
 
 .guiDiv {
     width: 33%;
     heigth: 40px;
-
     float: left;
 }
 
 .guiDivLeft {
     width: 100px;
-
     float: left;
     heigth: 100%;
 }
@@ -99,6 +122,11 @@ html {
 }
 */
 h2 {
+    font-family: "Calibri";
+    /*font-size: 25px;*/
+    color: #162388;
+}
+h3 {
     font-family: "Calibri";
     /*font-size: 25px;*/
     color: #162388;

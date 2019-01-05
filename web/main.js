@@ -1,19 +1,19 @@
 var conn;
-var filterProperties = new FilterProperties("2", ["korb1"], ["gui1"]);
+var filterProperties = new FilterProperties("0", [""], [""]);
 var messageDataContainer;
 function inform(){
-    console.log("filter change = "+filterProperties);
+    //console.log("filter change = "+filterProperties);
 }
 
 
-var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, ["Korb0", "Korb1", "Korb2", "Korb3", "Korb4", "Korb5", "Korb6", "Korb7"], [0, 1, 2, 3, 4, 5]))
+var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, [""], [0]));
 async function asyncReaderFunc(msg) {
     var reader = new FileReader();
     reader.onload = function () {
 
-
+        console.log(reader.result);
         let obj = JSON.parse(reader.result);
-
+        console.log(obj);
         if (isNaN(obj.length)) {
             var message = new Message(obj);
 
@@ -28,6 +28,8 @@ async function asyncReaderFunc(msg) {
             drawGraph1(messageHandler.getLineChartArray());
             setDataValue5(messageHandler.getBubbleChartArray());
 
+            console.log("time for performanceanalysis = "+new Date().getTime());
+
         }
         else {
             let messageCounter = obj.length;
@@ -39,6 +41,12 @@ async function asyncReaderFunc(msg) {
 
                 $("#korbMultiSelector").append("<option class='update' value="+obj[i]+">" + obj[i] + "</option>");
             }
+            setProperties();
+
+            updateProperties();
+
+
+            sendMessage(filterDataMessage);
         }
     }
     reader.readAsText(msg);

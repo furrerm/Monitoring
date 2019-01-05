@@ -59,7 +59,7 @@
 
                 $("#menu").css('height', '500px')
             });
-            setProperties();
+
             setTime();
             rollKoerbe();
 
@@ -70,7 +70,7 @@
 
             setInterval(function () {
                 d = new Date();
-                console.log(DateHelper.getDateStringForPrint(d));
+
                 $('#timeLabel').html(DateHelper.getDateStringForPrint(d));
                 $('#zeitraumLabel').html(DateHelper.getDateStringForPrintForFilterContainer(d, filterProperties));
 
@@ -82,10 +82,10 @@
             var start = 0;
             var end = 11;
             var activeKoerbe = koerbeArray.slice(0, 11);
-            var marginTop = 0;
+            var marginTop = 50;
 
             setInterval(function () {
-                if(koerbeArray !== filterProperties.koerbe){
+                if (koerbeArray !== filterProperties.koerbe) {
                     koerbeArray = filterProperties.koerbe;
                     activeKoerbe = koerbeArray.slice(0, 11);
                     marginTop = 0;
@@ -93,6 +93,7 @@
                     end = 11;
 
                     $(".korbText").remove();
+                    $(".blurDiv").remove();
                     for (var i = 0; i < activeKoerbe.length; ++i) {
 
                         var str = activeKoerbe[i];
@@ -102,12 +103,32 @@
                 if (koerbeArray.length >= 11) {
                     ++marginTop;
                     $(".korbText").css("top", "-" + marginTop + "px");
-                    console.log($(".korbText").css("height").substring(0, 2));
-                    if (marginTop >= $(".korbText").css("height").substring(0, 2)) {
+                    console.log($(".korbText").css("height").substring(0, 2) + 50);
+                    console.log(parseInt($(".korbText").css("height").substring(0, 2)) + 50);
 
-                        console.log("bigger");
-                        console.log("start = "+start);
-                        console.log("end = "+end);
+                    $(".blurDiv").remove();
+                    $("#korbFilterAnzeige").append("<div class = 'blurDiv' id = 'topBlurDiv'></div>");
+
+                    var position = $("#korbFilterAnzeige").offset();
+                    var width = $("#korbFilterAnzeige").width();
+
+
+                    $("#korbFilterAnzeige").append("<div class = 'blurDiv' id = 'bottomBlurDiv'></div>");
+
+                    var position2 = $("#korbFilterAnzeige").offset();
+                    var width2 = $("#korbFilterAnzeige").width();
+                    position2.top += $("#korbFilterAnzeige").height();
+
+                    console.log(position.top + " vs " + position2.top);
+                    position2.top -= $(".blurDiv").height();
+
+                    $(".blurDiv").css("position", "absolute");
+                    $(".blurDiv").css("width", width);
+                    $("#topBlurDiv").css(position);
+                    $("#bottomBlurDiv").css(position2);
+
+                    if (marginTop >= (parseInt($(".korbText").css("height").substring(0, 2)))) {
+
                         marginTop = 0;
                         ++start;
                         if (start >= koerbeArray.length) {
@@ -117,25 +138,47 @@
                         if (end > koerbeArray.length) {
                             end = 1;
                         }
-                        if(end > start){
+                        if (end > start) {
                             activeKoerbe = koerbeArray.slice(start, end);
-                        } else{
-                            //activeKoerbe = koerbeArray.slice(start, koerbeArray.length);
-                            //activeKoerbe.push( koerbeArray.slice(0, end));
+                        } else {
                             activeKoerbe = $.merge(koerbeArray.slice(start, koerbeArray.length), koerbeArray.slice(0, end));
                         }
 
-                        console.log(activeKoerbe);
-
-
-
-
                         $(".korbText").remove();
+                        $(".blurDiv").remove();
                         for (var i = 0; i < activeKoerbe.length; ++i) {
 
                             var str = activeKoerbe[i];
+
                             $("#korbFilterAnzeige").append("<p class = korbText>" + str + "</p>");
+                            $(".korbText").css("top", "-" + marginTop + "px");
+
+
                         }
+                        $("#korbFilterAnzeige").append("<div class = 'blurDiv' id = 'topBlurDiv'></div>");
+
+                        var position = $("#korbFilterAnzeige").offset();
+                        var width = $("#korbFilterAnzeige").width();
+
+
+                        $("#korbFilterAnzeige").append("<div class = 'blurDiv' id = 'bottomBlurDiv'></div>");
+
+                        var position2 = $("#korbFilterAnzeige").offset();
+                        var width2 = $("#korbFilterAnzeige").width();
+                        position2.top += $("#korbFilterAnzeige").height();
+
+                        console.log(position.top + " vs " + position2.top);
+                        position2.top -= $(".blurDiv").height();
+
+                        $(".blurDiv").css("position", "absolute");
+                        $(".blurDiv").css("width", width);
+                        $("#topBlurDiv").css(position);
+                        $("#bottomBlurDiv").css(position2);
+
+
+                        /*
+                        $("#korbFilterAnzeige").append("<div class = 'blurDiv' id = ''>" + str + "</div>");
+                        */
                     }
                 }
 
@@ -226,6 +269,7 @@
 
     </div>
 </div>
+<div style = "margin-left: 200px; margin-right: 200px; height: 90%">
 <div style="width:30%; height: 60%; float: left;">
     <div style="height: 8%;">
 
@@ -234,7 +278,7 @@
         <h2 class=filterTitels> Zeitraum</h2>
         <p class=filterLabels id="zeitraumLabel"></p>
     </div>
-    <div class="topBoarder" style="height: 26%">
+    <div class="topBoarder" style="height: 32%">
 
         <div style=" width: 100%; height: 60px">
             <h2 class=filterTitels> Aktive Gui's</h2>
@@ -285,28 +329,29 @@
             </div>
         </div>
     </div>
-    <div class="topBoarder" style="height: 51%;">
+    <div class="topBoarder" style="height: 45%;">
         <div style=" width: 100%; height: 60px">
             <h2 class=filterTitels> Aktive Arbeitskoerbe</h2>
             <p class=filterLabels id="korbLabel"></p>
         </div>
-        <div style="border: 2px solid black; width: 100%; height: calc(100% - 110px)">
+        <div style=" width: 100%; height: calc(100% - 110px)">
             <div id="korbFilterAnzeige"
-                 style="margin-left: 5%; margin-top: 2%; width: 90%; height: 90%; border: 2px solid black; overflow: hidden">
+                 style="margin-left: 5%; margin-top: 2%; width: 90%; height: 90%; overflow: hidden">
+                <div class="blurDiv" id="topBlurDiv"></div>
                 <p class="korbText"></p>
             </div>
         </div>
     </div>
 </div>
-<div style="width:70%; height: 60%; float: left">
-    <div style="height: 60% ;width:100%;float: left">
+<div style="width:62%; height: 60%; margin-left:8%; float: left">
+    <div style="height: 55% ;width:100%;float: left">
         <div style="width:33%; height:100%;float:left;">
             <div style="width:100%; height:1%; float:left"></div>
 
             <div id="main_1" style="width:100%; height:85%; float:left;"></div>
-            <div style="width:100%; height:2%; float:left"></div>
+
             <div style="width:100%; height:5%; float:left;">
-                <h2 style="text-align:center ">Neue Belege</h2>
+                <h3 style="text-align:center ">Neue Belege</h3>
             </div>
         </div>
 
@@ -315,9 +360,9 @@
 
 
             <div id="main_4" style=";top:0; width:100%; height:85%; float:left"></div>
-            <div style="width:100%; height:2%; float:left"></div>
+
             <div style="width:100%; height:5%; float:left;">
-                <h2 style="width:100%;text-align:center">Abgearbeitete Belege</h2>
+                <h3 style="width:100%;text-align:center">Abgearbeitete Belege</h3>
             </div>
         </div>
 
@@ -325,17 +370,17 @@
             <div style="width:100%; height:1%; float:left; "></div>
 
             <div id="main_6" style="width:100%; height:85%; float:left;"></div>
-            <div style="width:100%; height:2%; float:left"></div>
+
             <div style="width:100%; height:5%; float:left; ">
-                <h2 style="text-align:center ">Belege in Arbeitsk&ouml;rben</h2>
+                <h3 style="text-align:center ">Belege in Arbeitsk&ouml;rben</h3>
             </div>
         </div>
     </div>
 
-    <div style="width:100%; height:40%; float: left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
+    <div style="width:100%; height:45%; float: left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
 
         <div style="width:100%; height:10%; float: left">
-            <h2 style="text-align: left; width:100%; height:50px;">
+            <h2 id = titleBarDiagram style="text-align: left; width:100%; height:50px;">
                 Abgearbeitet/h
             </h2>
         </div>
@@ -351,7 +396,7 @@
 <div style="width:100%; height:30%;float:left; border-top: lightgray; border-top-style: solid; border-top-width: 2px">
 
     <div style=" width:100%; height:10%;float:left;">
-        <h2 style=" width: 100%;text-align: left; float:left">
+        <h2 id = titleBubbleDiagram style=" width: 100%;text-align: left; float:left">
             Abgearbeitet/h
         </h2>
     </div>
@@ -361,6 +406,6 @@
     </div>
 
 </div>
-
+</div>
 </body>
 </html>

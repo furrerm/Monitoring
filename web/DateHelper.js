@@ -467,7 +467,7 @@ class DateHelper {
         str = str.concat(":");
         str = str.concat(DateHelper.addZeroIfOneDigigt(date.getMinutes()));
         str = str.concat(" Uhr");
-        console.log(str);
+
         return str;
     }
 
@@ -510,7 +510,7 @@ class DateHelper {
         return arr[month];
     }
     static getWeekdayName(day) {
-        console.log
+
         var arr = new Array(7);
         arr[0] = "Montag";
         arr[1] = "Dienstag";

@@ -10,38 +10,46 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.json.*;
 import javax.websocket.EncodeException;
+import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
+import javax.jms.*;
 
 public class Sender implements MessageListener {
     private SessionInformation sessionInformation;
+    private int cou = 0;
 
 
     public Sender(SessionInformation sessionInformation) {
         this.sessionInformation = sessionInformation;
     }
 
-
-    public synchronized void onMessage(Message message) {
+    public void onMessage(Message message) {
         ObjectMessage objectMessage = (ObjectMessage) message;
         try {
             if (objectMessage.getObject() instanceof sender.MessageData) {
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
+
+
+
                 DTOFactory dtoFactory = new DTOFactory();
 
-
                 this.send(dtoFactory.createGeneralDTOFromMessage(msg), sessionInformation.getSession());
-
             }
         } catch (JMSException e) {
+            System.out.println("topic reader - sender problem");
+            try {
+                objectMessage.clearProperties();
+                objectMessage.clearBody();
+            } catch (JMSException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
     }
@@ -68,18 +76,33 @@ public class Sender implements MessageListener {
     }
     */
     public void send(GeneralDTO dto, Session session){
-        System.out.println("befor send");
-        dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
+
+        //dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
         JsonObject objectToSend = dto.toJsonString();
+        System.out.println("before websocket "+System.currentTimeMillis());
         if (session.isOpen()) {
+
+
             try {
-                session.getBasicRemote().sendBinary(ByteBuffer.wrap(objectToSend.toString().getBytes()));
-            } catch (IOException e) {
+
+
+                    RemoteEndpoint.Async async = session.getAsyncRemote();
+                    async.sendBinary(ByteBuffer.wrap(objectToSend.toString().getBytes()));
+
+
+
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
 
+
+        } else{
+            System.out.println("Session was closed");
+        }
+
+    }
+/*
     public void send(Set<sender.MessageData> messages, Session session) {
 
         System.out.println("called tl is instance");
@@ -100,7 +123,7 @@ public class Sender implements MessageListener {
         }
         System.out.println("session info = after is open");
     }
-
+*/
     public void send(List<String> messages, Session session) {
 
         System.out.println("called tl is instance");

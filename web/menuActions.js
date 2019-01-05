@@ -44,6 +44,17 @@ $(document).ready(function () {
         }
     });
 });
+function getTitleValue(timeOfInterest){
+    if(timeOfInterest === TimeOfInterest.DAY){
+        return "Abgearbeitet / h";
+    } else if(timeOfInterest === TimeOfInterest.WEEK){
+        return "Abgearbeitet / Tag";
+    } else if(timeOfInterest === TimeOfInterest.MONTH){
+        return "Abgearbeitet / Tag";
+    } else if(timeOfInterest === TimeOfInterest.YEAR){
+        return "Abgearbeitet / Monat";
+    }
+}
 function updateProperties(){
 
     var koerbe = $("#korbMultiSelector").val();
@@ -64,6 +75,8 @@ function updateProperties(){
     messageHandler = new MessageHandler(filterProperties);
 
     //update front end
+    $("#titleBarDiagram").html(getTitleValue(timeOfInterest));
+    $("#titleBubbleDiagram").html(getTitleValue(timeOfInterest));
     //guis
     $(".pointForGuiAnzeige").css("background-color", "lightgray");
     for(var i = 0; i < guis.length; ++i){

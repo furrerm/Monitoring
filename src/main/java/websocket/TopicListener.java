@@ -33,7 +33,6 @@ public class TopicListener  {
         // get the initial context
         InitialContext ctx = null;
         try {
-            System.out.println("pre connected successsssfulllly");
             ctx = new InitialContext();
 
 
@@ -52,7 +51,6 @@ public class TopicListener  {
 
             // create a topic subscriber
             TopicSubscriber topicSubscriber = topicSession.createSubscriber(topic);
-
 
             topicSubscriber.setMessageListener(sender);
 

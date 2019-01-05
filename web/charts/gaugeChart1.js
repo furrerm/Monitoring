@@ -90,7 +90,36 @@ function initGraph3() {
                 },
 
                 detail : {
+                    formatter: function(counterVariable){
+
+                        if(Math.abs(counterVariable).toString().length > 3){
+
+                            if(Math.abs(counterVariable).toString().length < 7){
+                                counterVariable = counterVariable / (1e3);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Tsd";
+                            } else if (Math.abs(counterVariable).toString().length < 10){
+                                counterVariable = counterVariable / (1e6);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Mio";
+                            } else if (Math.abs(counterVariable).toString().length < 13){
+                                counterVariable = counterVariable / (1e9);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Mia";
+                            } else if (Math.abs(counterVariable).toString().length < 16){
+                                counterVariable = counterVariable / (1e12);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Bio";
+                            } else if (Math.abs(counterVariable).toString().length < 19){
+                                counterVariable = counterVariable / (1e15);
+                                counterVariable = counterVariable.toString().substring(0,4);
+                                counterVariable += " Bia";
+                            }
+                        }
+                        return counterVariable;
+                    },
                     color: '#0D1A46',
+                    offsetCenter: [0,0]
                 },
 
             }

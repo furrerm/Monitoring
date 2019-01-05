@@ -40,21 +40,15 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
         try {
             if (objectMessage.getObject() instanceof sender.MessageData) {
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
-                System.out.println("MESSAGE BEAN: on bean Message received: " +
-                        msg.getGui());
-                Dispatcher dispatcher = Dispatcher.getInstance();
-                dispatcher.sendMessage(msg);
-
-                for(int i = 0; i < 1; ++i) {
 
                     UUID uuid = UUID.randomUUID();
                     String randomUUIDString = uuid.toString();
-                    Timestamp t = new Timestamp(msg.getTime().getTime()+1000*i);
+
 
                     entities.DataEntity entity = new entities.DataEntity();
                     entity.setUuid(randomUUIDString);
                     entity.setKorb(msg.getKorb());
-                    entity.setTime(t);
+                    entity.setTime(msg.getTime());
                     entity.setGui(msg.getGui());
                     entity.setStationaer(msg.getStationaer());
                     entity.setAmbulant(msg.getAmbulant());
@@ -74,13 +68,19 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                         koerbeEntity.setKorbName(msg.getKorb());
                         entityManager.persist(koerbeEntity);
                     }
-                }
+
+
+                Dispatcher dispatcher = Dispatcher.getInstance();
+                dispatcher.sendMessage(msg);
+
+                System.out.println("after db save "+System.currentTimeMillis());
+
             } else if(objectMessage.getObject() instanceof sender.Korbstand){
                 sender.Korbstand korbstandObject = (sender.Korbstand) objectMessage.getObject();
                 TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k where k.korbName = :korbName",entities.KoerbeEntity.class);
                 query.setParameter("korbName", korbstandObject.getKorb());
                 entities.KoerbeEntity korbEntity = query.getSingleResult();
-                System.out.println("mdb gives = "+korbEntity.getKorbName());
+
                 KorbstaendeEntity korbstaendeEntity = new KorbstaendeEntity();
                 korbstaendeEntity.setGui(korbstandObject.getGui());
                 korbstaendeEntity.setInhalt(korbstandObject.getKorbstand());

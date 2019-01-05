@@ -25,7 +25,7 @@ public class Dispatcher {
     private ObjectMessage objMessage;
     private TopicPublisher sender;
     private TopicConnection con;
-
+    private int cou = 0;
 
     private Dispatcher() {
         this.initialize();
@@ -34,24 +34,40 @@ public class Dispatcher {
     public static Dispatcher getInstance() {
         if (instance == null) {
             instance = new Dispatcher();
+            System.out.println("instance created");
         }
         return instance;
     }
 
-    public void sendMessage(sender.MessageData message) {
+    public synchronized void sendMessage(sender.MessageData message) {
+        ++cou;
         try {
-            System.out.println("pre sending");
+
             objMessage.setObject(message);
-            System.out.println("middle sending");
-            sender.send(objMessage);
-            System.out.println("post sending");
+
+
+            try{
+
+
+
+                        sender.publish(objMessage);
+
+
+            } catch(JMSException jmsException){
+                System.out.println("eXCEPTION THROWN ON = "+message.getUuid());
+                try {
+                    Thread.sleep(10);
+                    this.sendMessage(message);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (JMSException e) {
             e.printStackTrace();
         }
     }
 
-    public void initialize() {
-
+    public synchronized void initialize() {
 
         try {
             InitialContext ctx = new InitialContext();
