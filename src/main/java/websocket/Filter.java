@@ -8,7 +8,7 @@ import java.util.*;
 public class Filter {
     private Timestamp von;
     private Timestamp bis;
-    private Set<String> koerbe;
+    private Set<Integer> koerbe;
     private Set<Integer> guis;
     private List<Long> subPeriods;
 
@@ -23,15 +23,20 @@ public class Filter {
 
         System.out.println("message = " + message);
         System.out.println("koerbe = " + obj.getJsonArray("koerbe"));
+        System.out.println("guis = " + obj.getJsonArray("guis"));
+        System.out.println("subtimes = "+obj.getJsonArray("subTimeList"));
 
         //System.out.println("guis = "+obj.getJsonArray("guis"));
 
-        JsonArray arr = obj.getJsonArray("koerbe");
 
 
-        koerbe = toStringSet(obj.getJsonArray("koerbe"));
+
+        koerbe = toIntSet(obj.getJsonArray("koerbe"));
+        System.out.println("here 13");
         guis = toIntSet(obj.getJsonArray("guis"));
+        System.out.println("here 14");
         subPeriods = new ArrayList(toLongSet(obj.getJsonArray("subTimeList")));
+        System.out.println("here 15");
         subPeriods.sort((a,b) -> {
             if(a - b > 0){
                 return 1;
@@ -40,6 +45,9 @@ public class Filter {
             }
             return 0;
         });
+        koerbe.forEach(a -> System.out.println(a));
+
+        subPeriods.forEach(a -> System.out.println(new Timestamp(a)));
 
 
         this.von = new Timestamp(obj.getJsonNumber("timeOfInterest").longValue());
@@ -95,7 +103,7 @@ public class Filter {
         return von;
     }
 
-    public Set<String> getKoerbe() {
+    public Set<Integer> getKoerbe() {
         return koerbe;
     }
 

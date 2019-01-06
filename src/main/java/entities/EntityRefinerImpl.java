@@ -5,8 +5,8 @@ import sender.MessageData;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EntityRefinerImpl implements EntityRefiner{
-
+public class EntityRefinerImpl{
+/*
     private sender.MessageData entityToMessageData(DataEntity dataEntity) {
         sender.MessageData message = new MessageData(dataEntity.getUuid());
         message.setTime(dataEntity.getTime());
@@ -31,4 +31,5 @@ public class EntityRefinerImpl implements EntityRefiner{
         }
         return messages;
     }
+    */
 }

@@ -10,6 +10,7 @@ public class SessionInformation {
 
     private Session session;
     private UuidController uuidController;
+    private Filter filter;
 
     public SessionInformation(Session session) {
 
@@ -27,6 +28,14 @@ public class SessionInformation {
 
     public UuidController getUuidController() {
         return uuidController;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 }
 

@@ -1,8 +1,9 @@
 class FilterProperties {
 
-    constructor(timeOfInterest, koerbe, guis) {
+    constructor(timeOfInterest, koerbe, guis, koerbeStrings) {
        this.timeOfInterest = timeOfInterest;
        this.koerbe = koerbe;
+       this.koerbeStrings = koerbeStrings;
        this.guis = guis;
        this.granularity = this.getGranularity(timeOfInterest);
     }

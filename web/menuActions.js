@@ -37,27 +37,38 @@ $( "#time2" ).click(function() {
 var filterDataMessage;
 $(document).ready(function () {
 
-    $('#toggle').click(function() {
-        if(!$('#toggle').is(':checked')) {
+    $('#toggle').click(function () {
+        if (!$('#toggle').is(':checked')) {
             updateProperties();
             sendMessage(filterDataMessage);
         }
     });
 });
-function getTitleValue(timeOfInterest){
-    if(timeOfInterest === TimeOfInterest.DAY){
+
+function getTitleValue(timeOfInterest) {
+    if (timeOfInterest === TimeOfInterest.DAY) {
         return "Abgearbeitet / h";
-    } else if(timeOfInterest === TimeOfInterest.WEEK){
+    } else if (timeOfInterest === TimeOfInterest.WEEK) {
         return "Abgearbeitet / Tag";
-    } else if(timeOfInterest === TimeOfInterest.MONTH){
+    } else if (timeOfInterest === TimeOfInterest.MONTH) {
         return "Abgearbeitet / Tag";
-    } else if(timeOfInterest === TimeOfInterest.YEAR){
+    } else if (timeOfInterest === TimeOfInterest.YEAR) {
         return "Abgearbeitet / Monat";
     }
 }
-function updateProperties(){
 
-    var koerbe = $("#korbMultiSelector").val();
+function updateProperties() {
+    var koerbeIdStrings = $("#korbMultiSelector").val();
+    var koerbe = [];
+    koerbeIdStrings.forEach(function (korbIdAsString) {
+        koerbe.push(parseInt(korbIdAsString));
+    });
+    var koerbeStrings = [];
+    $("#korbMultiSelector option:checked").each(function () {
+        koerbeStrings.push($(this).html());
+
+    });
+
     var timeOfInterestId = parseInt($(".zeitspanne:checked").val(), 10);
     var guis = [];
     $(".guicheckboxes:checkbox:checked").each(function () {
@@ -66,12 +77,12 @@ function updateProperties(){
 
     var timeOfInterest;
     for (const entry in TimeOfInterest) {
-        if(TimeOfInterest[entry].ID === timeOfInterestId){
+        if (TimeOfInterest[entry].ID === timeOfInterestId) {
             timeOfInterest = TimeOfInterest[entry];
         }
     }
 
-    filterProperties = new FilterProperties(timeOfInterest, koerbe, guis);
+    filterProperties = new FilterProperties(timeOfInterest, koerbe, guis, koerbeStrings);
     messageHandler = new MessageHandler(filterProperties);
 
     //update front end
@@ -79,40 +90,40 @@ function updateProperties(){
     $("#titleBubbleDiagram").html(getTitleValue(timeOfInterest));
     //guis
     $(".pointForGuiAnzeige").css("background-color", "lightgray");
-    for(var i = 0; i < guis.length; ++i){
+    for (var i = 0; i < guis.length; ++i) {
 
-        var str = "gui"+guis[i];
-        $("#"+str).css("background-color", "#00a7e0");
+        var str = "gui" + guis[i];
+        $("#" + str).css("background-color", "#00a7e0");
     }
     $("#guiLabel").html(guis.length);
     $("#korbLabel").html(koerbe.length);
 
-    
+
     //create cookies
 
     var selectedKoerbe = [];
     for (var i = 0; i < koerbe.length; ++i) {
         selectedKoerbe.push({'korbName': koerbe[i]})
     }
-    $.cookie("koerbe", JSON.stringify(selectedKoerbe));
+    $.cookie("koerbe", JSON.stringify(selectedKoerbe), {expires: 365});
 
     var selectedGuis = [];
     for (var i = 0; i < guis.length; ++i) {
         selectedGuis.push({'guiName': guis[i]})
     }
-    $.cookie("guis", JSON.stringify(selectedGuis));
-    $.cookie("zeitspanne", JSON.stringify(timeOfInterestId));
+    $.cookie("guis", JSON.stringify(selectedGuis), {expires: 365});
+    $.cookie("zeitspanne", JSON.stringify(timeOfInterestId), {expires: 365});
 
     //create Message
     filterDataMessage = {};
     filterDataMessage.guis = guis;
     filterDataMessage.koerbe = koerbe;
 
-    var period = DateHelper.getStartInMillisFromEnum(timeOfInterest,new Date());
+    var period = DateHelper.getStartInMillisFromEnum(timeOfInterest, new Date());
     filterDataMessage.timeOfInterest = period.von;
     filterDataMessage.timeOfInterestEnd = period.bis;
 
-    filterDataMessage.subTimeList = DateHelper.getSubTimeRangesInMillis(timeOfInterest,new Date());
+    filterDataMessage.subTimeList = DateHelper.getSubTimeRangesInMillis(timeOfInterest, new Date());
     filterDataMessage = JSON.stringify(filterDataMessage).replace(/\s/g, '');
 
     console.log(filterDataMessage);

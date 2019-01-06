@@ -8,6 +8,7 @@
         <class>entities.DataEntity</class>
         <class>entities.KoerbeEntity</class>
         <class>entities.KorbstaendeEntity</class>
+        <class>entities.GuisEntity</class>
 
         <properties>
 

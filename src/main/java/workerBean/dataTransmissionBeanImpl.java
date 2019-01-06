@@ -30,10 +30,10 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
 
         Long startOfPeriod = filter.getVon().getTime();
         Long endOfPeriod = filter.getBis().getTime();
-        Timestamp lastMinute = new Timestamp(filter.getBis().getTime()- 60000);
+        Timestamp lastMinute = new Timestamp(filter.getBis().getTime() - 60000);
 
-        String guis = filter.getGuis().stream().map(a-> a.toString()).collect(Collectors.joining(","));
-        String koerbe =  filter.getKoerbe().stream().collect(Collectors.joining("','","'","'"));
+        String guis = filter.getGuis().stream().map(a -> a.toString()).collect(Collectors.joining(","));
+        String koerbe =  filter.getKoerbe().stream().map(a -> a.toString()).collect(Collectors.joining(","));
 
         Query query =
                 entityManager.createNativeQuery("SELECT * FROM " +
@@ -42,14 +42,14 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                         "WHERE d.incoming = 1 " +
                         "AND d.time >= '" + new Timestamp(startOfPeriod) + "' " +
                         "AND d.time < '" + new Timestamp(endOfPeriod) + "' " +
-                        "AND d.gui in ( "+guis+" )" +
-                        "AND d.korb in ( "+koerbe+" )" +
+                        "AND d.gui in ( " + guis + " )" +
+                        "AND d.korb in ( " + koerbe + " )" +
                         ") AS A " +
                         "LEFT OUTER JOIN (SELECT c.uuid, c.time FROM data c " +
                         "WHERE c.incoming = 1 " +
                         "AND c.time >= '" + lastMinute + "' " +
-                        "AND c.gui in ( "+guis+" )" +
-                        "AND c.korb in ( "+koerbe+" )" +
+                        "AND c.gui in ( " + guis + " )" +
+                        "AND c.korb in ( " + koerbe + " )" +
                         ") AS B on 1=1)");
 
         List<Object[]> results = query.getResultList();
@@ -69,11 +69,11 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
     @Override
     public List<Outgoing> getOutgoings(Filter filter) {
 
-        List<Long> periods =filter.getSubPeriods();
+        List<Long> periods = filter.getSubPeriods();
 
         long startOfPeriod;
         long endOfPeriod;
-        Timestamp lastMinute = new Timestamp(filter.getBis().getTime()- 60000);
+        Timestamp lastMinute = new Timestamp(filter.getBis().getTime() - 60000);
 
         List<Outgoing> outgoings = new ArrayList<>();
 
@@ -85,9 +85,11 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                 endOfPeriod = filter.getBis().getTime();
 
 
-                String guis = filter.getGuis().stream().map(a-> a.toString()).collect(Collectors.joining(","));
-                String koerbe =  filter.getKoerbe().stream().collect(Collectors.joining("','","'","'"));
-
+                String guis = filter.getGuis().stream().map(a -> a.toString()).collect(Collectors.joining(","));
+                String koerbe =  filter.getKoerbe().stream().map(a -> a.toString()).collect(Collectors.joining(","));
+                System.out.println("timestamps in worker bean");
+                System.out.println(new Timestamp(startOfPeriod));
+                System.out.println(new Timestamp(endOfPeriod));
                 Query query =
                         entityManager.createNativeQuery("SELECT * FROM " +
                                 "((SELECT Count(*) " +
@@ -95,33 +97,33 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                                 "WHERE d.outgoing = 1 " +
                                 "AND d.time >= '" + new Timestamp(startOfPeriod) + "' " +
                                 "AND d.time < '" + new Timestamp(endOfPeriod) + "' " +
-                                "AND d.gui in ( "+guis+" )" +
-                                "AND d.korb in ( "+koerbe+" )" +
+                                "AND d.gui in ( " + guis + " )" +
+                                "AND d.korb in ( " + koerbe + " )" +
                                 ") AS A " +
                                 "LEFT OUTER JOIN (SELECT c.uuid, c.time FROM data c " +
                                 "WHERE c.outgoing = 1 " +
                                 "AND c.time >= '" + new Timestamp(startOfPeriod) + "' " +
-                                "AND c.gui in ( "+guis+" )" +
-                                "AND c.korb in ( "+koerbe+" )" +
+                                "AND c.gui in ( " + guis + " )" +
+                                "AND c.korb in ( " + koerbe + " )" +
                                 ") AS B on 1=1)");
 
                 System.out.println(query.toString());
 
 
-
                 List<Object[]> results = query.getResultList();
+                System.out.println((results.get(0)[0]));
                 Outgoing outgoing = new Outgoing(((Long) results.get(0)[0]), new Timestamp(startOfPeriod));
                 Map<String, Timestamp> uuids = new HashMap();
                 for (Object[] result : results) {
-                    if(result[1] != null){
-                        uuids.put(result[1].toString(),(Timestamp)result[2]);
+                    if (result[1] != null) {
+                        uuids.put(result[1].toString(), (Timestamp) result[2]);
                     }
                 }
                 outgoing.setUids(uuids);
                 outgoings.add(outgoing);
 
             } else {
-                endOfPeriod = periods.get(i+1);
+                endOfPeriod = periods.get(i + 1);
 
                 TypedQuery<Long> query =
                         entityManager.createQuery("SELECT Count(c) FROM DataEntity c " +
@@ -132,18 +134,25 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                                 "AND c.korb in :koerbe ", Long.class);
 
                 long result = query.setParameter("guis", filter.getGuis()).setParameter("koerbe", filter.getKoerbe()).getSingleResult();
+
+
+
+
+                String koerbe = "1,2,3,4,5";
                 Outgoing outgoing = new Outgoing(result, new Timestamp(startOfPeriod));
                 outgoings.add(outgoing);
             }
         }
         return outgoings;
     }
+
     @Override
-    public List<String> getKoerbe() {
+    public List<KoerbeEntity> getKoerbe() {
 
-       TypedQuery<String> query = entityManager.createQuery("Select k.korbName from KoerbeEntity k", String.class);
+        TypedQuery<KoerbeEntity> query = entityManager.createQuery("Select k from KoerbeEntity k", KoerbeEntity.class);
 
-        List<String> koerbe = query.getResultList();
+        List<KoerbeEntity> koerbe = query.getResultList();
+
         return koerbe;
     }
 

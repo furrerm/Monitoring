@@ -7,21 +7,25 @@ import java.util.Objects;
 @Entity
 @Table(name = "korbstaende", schema = "cssdashboard", catalog = "")
 public class KorbstaendeEntity {
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int idkorbstaende;
-
     private int inhalt;
-    private Integer gui;
+    private int gui;
+    private int korb;
     private Timestamp updateTime;
+    private DataEntity dataByKorb;
+    private DataEntity dataByGui;
+    private GuisEntity guisByGui;
     private KoerbeEntity koerbeByKorb;
 
-
+    @Id
+    @Column(name = "idkorbstaende", nullable = false)
     public int getIdkorbstaende() {
         return idkorbstaende;
     }
 
+    public void setIdkorbstaende(int idkorbstaende) {
+        this.idkorbstaende = idkorbstaende;
+    }
 
     @Basic
     @Column(name = "inhalt", nullable = false)
@@ -34,13 +38,23 @@ public class KorbstaendeEntity {
     }
 
     @Basic
-    @Column(name = "gui", nullable = true)
-    public Integer getGui() {
+    @Column(name = "gui", nullable = false)
+    public int getGui() {
         return gui;
     }
 
-    public void setGui(Integer gui) {
+    public void setGui(int gui) {
         this.gui = gui;
+    }
+
+    @Basic
+    @Column(name = "korb", nullable = false)
+    public int getKorb() {
+        return korb;
+    }
+
+    public void setKorb(int korb) {
+        this.korb = korb;
     }
 
     @Basic
@@ -60,18 +74,29 @@ public class KorbstaendeEntity {
         KorbstaendeEntity that = (KorbstaendeEntity) o;
         return idkorbstaende == that.idkorbstaende &&
                 inhalt == that.inhalt &&
-                Objects.equals(gui, that.gui) &&
+                gui == that.gui &&
+                korb == that.korb &&
                 Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(idkorbstaende, inhalt, gui, updateTime);
+        return Objects.hash(idkorbstaende, inhalt, gui, korb, updateTime);
     }
 
     @ManyToOne
-    @JoinColumn(name = "korb", referencedColumnName = "idkoerbe")
+    @PrimaryKeyJoinColumn(name = "gui", referencedColumnName = "idGuis")
+    public GuisEntity getGuisByGui() {
+        return guisByGui;
+    }
+
+    public void setGuisByGui(GuisEntity guisByGui) {
+        this.guisByGui = guisByGui;
+    }
+
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name = "korb", referencedColumnName = "idkoerbe")
     public KoerbeEntity getKoerbeByKorb() {
         return koerbeByKorb;
     }

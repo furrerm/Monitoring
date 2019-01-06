@@ -5,6 +5,7 @@ import dtos.Outgoing;
 import entities.DataEntity;
 import entities.EntityRefiner;
 import entities.EntityRefinerImpl;
+import entities.KoerbeEntity;
 import jmsConnector.Dispatcher;
 import workerBean.dataTransmissionBean;
 
@@ -43,7 +44,7 @@ public class Websocket {
 
             dataTransmissionBean libraryBean1 =
                     (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
-            List<String> list = libraryBean1.getKoerbe();
+            List<KoerbeEntity> list = libraryBean1.getKoerbe();
             topicListener.getSender().send(list, sessionInformation.getSession());
 
         } catch (NamingException e) {
@@ -60,7 +61,7 @@ public class Websocket {
     @OnMessage
     public void onMessage(String message, Session userSession) {
         Filter filter = new Filter(message);
-
+        sessionInformation.setFilter(filter);
         Incoming incoming = getEntitiesFromBegin(filter);
 
         topicListener.getSender().send(incoming, sessionInformation.getSession());

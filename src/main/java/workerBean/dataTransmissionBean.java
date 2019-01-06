@@ -3,6 +3,7 @@ package workerBean;
 import dtos.Incoming;
 import dtos.Outgoing;
 import entities.DataEntity;
+import entities.KoerbeEntity;
 import websocket.Filter;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
 public interface dataTransmissionBean {
     Incoming saveIt(Filter filter);
     List<Outgoing> getOutgoings(Filter filter);
-    List<String> getKoerbe();
+    List<KoerbeEntity> getKoerbe();
 }

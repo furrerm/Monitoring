@@ -375,7 +375,8 @@ class DateHelper {
             case TimeOfInterest.WEEK:
                 startOfPeriodDate.setDate(dateNow.getDate() - DateHelper.shiftWeekday(dateNow.getDay()));
                 startOfPeriodDate.setHours(0, 0, 0, 0);
-                endOfPeriodDate.setDate(startOfPeriodDate.getDate() + TimeOfInterest.WEEK.ENTITIES);
+
+                endOfPeriodDate = new Date(startOfPeriodDate.getTime() + (TimeOfInterest.WEEK.ENTITIES*24*36e5));
                 endOfPeriodDate.setHours(0, 0, 0, 0);
                 break;
             case TimeOfInterest.MONTH:
@@ -404,6 +405,7 @@ class DateHelper {
     static getSubTimeRangesInMillis(timeOfInterestEnumValue, bezugsdatum) {
 
         var startOfPeriodDate = new Date(bezugsdatum.getTime());
+        console.log(startOfPeriodDate);
         var startOfSubPeriodDate = new Date(bezugsdatum.getTime());
         var arrayWithTimeTuples = [];
         switch (timeOfInterestEnumValue) {
@@ -419,10 +421,11 @@ class DateHelper {
                 break;
             case TimeOfInterest.WEEK:
                 startOfPeriodDate.setDate(startOfPeriodDate.getDate() - DateHelper.shiftWeekday(startOfPeriodDate.getDay()));
+                startOfPeriodDate.setHours(0, 0, 0, 0);
                 startOfSubPeriodDate.setHours(0, 0, 0, 0);
 
                 for (var i = 0; i < TimeOfInterest.WEEK.ENTITIES; ++i) {
-                    startOfSubPeriodDate.setDate(startOfPeriodDate.getDate() + i);
+                    startOfSubPeriodDate = new Date(startOfPeriodDate.getTime() + 24*i*36*1e5);
                     arrayWithTimeTuples[i] = startOfSubPeriodDate.getTime();
                 }
                 break;

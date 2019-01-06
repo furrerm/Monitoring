@@ -1,12 +1,12 @@
 var conn;
-var filterProperties = new FilterProperties("0", [""], [""]);
+var filterProperties = new FilterProperties("0", [""], [""], [""]);
 var messageDataContainer;
 function inform(){
     //console.log("filter change = "+filterProperties);
 }
 
 
-var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, [""], [0]));
+var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, [""], [0], [""]));
 async function asyncReaderFunc(msg) {
     var reader = new FileReader();
     reader.onload = function () {
@@ -38,13 +38,11 @@ async function asyncReaderFunc(msg) {
             for (let i = 0; i < messageCounter; ++i) {
                 console.log(obj[i]);
 
-
-                $("#korbMultiSelector").append("<option class='update' value="+obj[i]+">" + obj[i] + "</option>");
+                $("#korbMultiSelector").append("<option class='update' value="+obj[i].id+">" + obj[i].korbName + "</option>");
             }
             setProperties();
 
             updateProperties();
-
 
             sendMessage(filterDataMessage);
         }

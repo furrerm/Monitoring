@@ -48,45 +48,36 @@
 
             connect();
         }
-
         $(document).ready(function () {
             // $.getScript("menuActions.js");
-
             //*************************************************//
-
             $("#menu").click(function () {
-
 
                 $("#menu").css('height', '500px')
             });
-
             setTime();
             rollKoerbe();
-
         });
-
         function setTime() {
 
-
             setInterval(function () {
-                d = new Date();
 
+                d = new Date();
                 $('#timeLabel').html(DateHelper.getDateStringForPrint(d));
                 $('#zeitraumLabel').html(DateHelper.getDateStringForPrintForFilterContainer(d, filterProperties));
-
             }, 1000);
         }
 
         function rollKoerbe() {
-            var koerbeArray = filterProperties.koerbe.slice();
+            var koerbeArray = filterProperties.koerbeStrings.slice();
             var start = 0;
             var end = 11;
             var activeKoerbe = koerbeArray.slice(0, 11);
             var marginTop = 50;
 
             setInterval(function () {
-                if (koerbeArray !== filterProperties.koerbe) {
-                    koerbeArray = filterProperties.koerbe;
+                if (koerbeArray !== filterProperties.koerbeStrings) {
+                    koerbeArray = filterProperties.koerbeStrings;
                     activeKoerbe = koerbeArray.slice(0, 11);
                     marginTop = 0;
                     start = 0;

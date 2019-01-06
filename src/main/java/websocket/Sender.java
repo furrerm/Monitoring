@@ -2,6 +2,7 @@ package websocket;
 
 import dtos.DTOFactory;
 import dtos.GeneralDTO;
+import entities.KoerbeEntity;
 import sender.MessageData;
 
 import javax.jms.JMSException;
@@ -36,11 +37,12 @@ public class Sender implements MessageListener {
             if (objectMessage.getObject() instanceof sender.MessageData) {
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
 
+                if(this.messageIsValid(msg, sessionInformation.getFilter())) {
 
+                    DTOFactory dtoFactory = new DTOFactory();
 
-                DTOFactory dtoFactory = new DTOFactory();
-
-                this.send(dtoFactory.createGeneralDTOFromMessage(msg), sessionInformation.getSession());
+                    this.send(dtoFactory.createGeneralDTOFromMessage(msg), sessionInformation.getSession());
+                }
             }
         } catch (JMSException e) {
             System.out.println("topic reader - sender problem");
@@ -53,28 +55,7 @@ public class Sender implements MessageListener {
             e.printStackTrace();
         }
     }
-/*
-    private void send(sender.MessageData message, Session session) {
 
-        System.out.println("called tl is instance");
-        System.out.println("session info = " + session.isOpen());
-        if (session.isOpen()) {
-            //session.getAsyncRemote().sendObject(createJsonString(message));
-            //session.getBasicRemote().sendObject(createJsonString(message));
-            session.setMaxBinaryMessageBufferSize(10);
-            ByteBuffer bites = ByteBuffer.wrap(message.getKorb().getBytes(Charset.defaultCharset()));
-            try {
-                session.getBasicRemote().sendBinary(ByteBuffer.wrap(createJsonString(message).toString().getBytes()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // Thread.sleep(150);
-            //session.getBasicRemote().sendBinary(message.getKorb().getBytes());
-        }
-        System.out.println("session info = after is open");
-    }
-    */
     public void send(GeneralDTO dto, Session session){
 
         //dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
@@ -102,29 +83,7 @@ public class Sender implements MessageListener {
         }
 
     }
-/*
-    public void send(Set<sender.MessageData> messages, Session session) {
-
-        System.out.println("called tl is instance");
-        System.out.println("session info = " + session.isOpen());
-        if (session.isOpen()) {
-            //session.getAsyncRemote().sendObject(createJsonString(message));
-            //session.getBasicRemote().sendObject(createJsonString(message));
-            session.setMaxBinaryMessageBufferSize(10);
-
-            try {
-                session.getBasicRemote().sendBinary(ByteBuffer.wrap(createJsonString(messages).toString().getBytes()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // Thread.sleep(150);
-            //session.getBasicRemote().sendBinary(message.getKorb().getBytes());
-        }
-        System.out.println("session info = after is open");
-    }
-*/
-    public void send(List<String> messages, Session session) {
+    public void send(List<KoerbeEntity> messages, Session session) {
 
         System.out.println("called tl is instance");
         System.out.println("session info = " + session.isOpen());
@@ -190,13 +149,17 @@ public class Sender implements MessageListener {
 
         return null;
     }
-    private JsonArray createJsonArrayFromString(List<String> messages) {
+    private JsonArray createJsonArrayFromString(List<KoerbeEntity> messages) {
+
+
 
         try {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-            for (String message : messages) {
-                arrayBuilder.add(message);
+            for (KoerbeEntity message : messages) {
+                JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+                JsonObject jsonObject = jsonObjectBuilder.add("id", message.getIdkoerbe()).add("korbName", message.getKorbName()).build();
+                arrayBuilder.add(jsonObject);
             }
 
             return arrayBuilder.build();
@@ -206,5 +169,14 @@ public class Sender implements MessageListener {
         }
 
         return null;
+    }
+    private boolean messageIsValid(sender.MessageData messageData, Filter filter){
+        if(filter.getKoerbe().contains(messageData.getKorbId()) &&
+                filter.getGuis().contains(messageData.getGui()) &&
+                (filter.getBis().after(messageData.getTime()) || filter.getBis().equals(messageData.getTime())) &&
+                        (filter.getVon().before(messageData.getTime()))){
+                    return true;
+        }
+        return false;
     }
 }

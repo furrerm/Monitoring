@@ -163,7 +163,7 @@ function initGraph4() {
 
 function updateGauge4(counterVariable) {
 
-    var exponent = counterVariable.toString().length - 1;
+    var exponent = counterVariable.toString().length;
     var maxValue = Math.pow(10, exponent);
 
 
