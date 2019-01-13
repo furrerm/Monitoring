@@ -126,12 +126,10 @@ function updateProperties() {
     filterDataMessage.subTimeList = DateHelper.getSubTimeRangesInMillis(timeOfInterest, new Date());
     filterDataMessage = JSON.stringify(filterDataMessage).replace(/\s/g, '');
 
-    console.log(filterDataMessage);
 }
 
 function getDateFormatted(date) {
     var fullDate = date;
-    //console.log(fullDate);
     var twoDigitMonth = fullDate.getMonth() + 1;
     twoDigitMonth + "";
     if (twoDigitMonth.length == 1) {

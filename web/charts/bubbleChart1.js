@@ -97,10 +97,6 @@ var minuend = 0;
 
 function setDataValue5(messageDataArray) {
 
-    console.log("bubble chart =");
-    console.log(messageDataArray[0]);
-
-
     const maxSymbolHeight = $("#main5").height();
     const maxSymbolWidth = $("#main5").width() * 0.9 / messageDataArray[0].length;
     const biggestValue = messageDataArray[2];

@@ -52,7 +52,6 @@ public class Websocket {
 
     @OnClose
     public void onClose(Session userSession) {
-        System.out.println("Verbindung getrennt...");
 
     }
 
@@ -67,24 +66,16 @@ public class Websocket {
         topicListener.getSender().send(incoming, sessionInformation.getSession());
 
         List<Outgoing> outgoings = getOutgoings(filter);
-        System.out.println("outgoing Print");
         for(Outgoing outgoing: outgoings){
-            System.out.println(outgoing.getTimestamp());
-            System.out.println(outgoing.getOutgoing());
-            if(outgoing.getUids() != null){
-                outgoing.getUids().keySet().forEach(a -> System.out.println(a));
-            }
             topicListener.getSender().send(outgoing, sessionInformation.getSession());
         }
 
         TotalAmount totalAmount = getTotalAmount(filter);
-        System.out.println("total amount = "+totalAmount.getAggregiertesTotal());
         topicListener.getSender().send(totalAmount, sessionInformation.getSession());
 
     }
     private Incoming getEntitiesFromBegin(Filter filter){
 
-        System.out.println("pre pre query Incoming");
         Incoming incoming = null;
         try {
             InitialContext ctx = new InitialContext();
@@ -102,7 +93,6 @@ public class Websocket {
 
     private List<Outgoing> getOutgoings(Filter filter){
 
-        System.out.println("pre pre query outgoings");
         List<Outgoing> outgoings = null;
         try {
             InitialContext ctx = new InitialContext();
@@ -117,7 +107,6 @@ public class Websocket {
     }
     private TotalAmount getTotalAmount(Filter filter){
 
-        System.out.println("pre pre query total");
         TotalAmount totalAmount = null;
         try {
             InitialContext ctx = new InitialContext();

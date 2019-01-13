@@ -45,7 +45,6 @@ public class Sender implements MessageListener {
                 }
             }
         } catch (JMSException e) {
-            System.out.println("topic reader - sender problem");
             try {
                 objectMessage.clearProperties();
                 objectMessage.clearBody();
@@ -58,11 +57,8 @@ public class Sender implements MessageListener {
 
     public void send(GeneralDTO dto, Session session) {
 
-        System.out.println("before correction = "+dto.toJsonString().toString());
         dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
         JsonObject objectToSend = dto.toJsonString();
-        System.out.println("before websocket " + System.currentTimeMillis());
-        System.out.println(objectToSend.toString());
         if (session.isOpen()) {
             try {
                 RemoteEndpoint.Async async = session.getAsyncRemote();
@@ -70,15 +66,11 @@ public class Sender implements MessageListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            System.out.println("Session was closed");
         }
     }
 
     public void send(List<KoerbeEntity> messages, Session session) {
 
-        System.out.println("called tl is instance");
-        System.out.println("session info = " + session.isOpen());
         if (session.isOpen()) {
 
             try {
@@ -88,7 +80,6 @@ public class Sender implements MessageListener {
                 e.printStackTrace();
             }
         }
-        System.out.println("session info = after is open");
     }
 
     private JsonObject createJsonString(sender.MessageData msg) {

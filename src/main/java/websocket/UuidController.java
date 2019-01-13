@@ -23,13 +23,9 @@ public class UuidController {
         if (uuidsToCheck == null) {
             return 0;
         }
-        System.out.println("saved uuids");
         int amountOfDoubleEntries = 0;
-        savedUuids.keySet().forEach(a -> System.out.println(a));
-        System.out.println("uuids to check");
 
         for (String uuidToCheck : uuidsToCheck.keySet()) {
-            System.out.println(uuidToCheck);
             if (savedUuids.keySet().contains(uuidToCheck)) {
                 if(uuidsToCheck.get(uuidToCheck).isIncoming()){
                     --amountOfDoubleEntries;
@@ -41,7 +37,6 @@ public class UuidController {
                 savedUuids.put(uuidToCheck, uuidsToCheck.get(uuidToCheck));
             }
         }
-        System.out.println("amount of double entries = "+amountOfDoubleEntries);
         clearOldEntries();
 
         return amountOfDoubleEntries;

@@ -34,7 +34,6 @@ public class Dispatcher {
     public static Dispatcher getInstance() {
         if (instance == null) {
             instance = new Dispatcher();
-            System.out.println("instance created");
         }
         return instance;
     }
@@ -54,7 +53,6 @@ public class Dispatcher {
 
 
             } catch(JMSException jmsException){
-                System.out.println("eXCEPTION THROWN ON = "+message.getUuid());
                 try {
                     Thread.sleep(10);
                     this.sendMessage(message);
@@ -86,13 +84,10 @@ public class Dispatcher {
             sender.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             objMessage = ses.createObjectMessage();
-            System.out.println("initialized succesfully");
 
         } catch (Exception e) {
-            System.out.println("something wrong");
             System.out.println(e);
         }
-        System.out.println("initialize done");
     }
 
 

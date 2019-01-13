@@ -9,7 +9,6 @@ class DateHelper {
 
     static getDateFormatted(date) {
         var fullDate = date;
-        //console.log(fullDate);
         var twoDigitMonth = fullDate.getMonth() + 1;
         twoDigitMonth + "";
         if (twoDigitMonth.length == 1) {
@@ -397,7 +396,6 @@ class DateHelper {
                 break;
 
         }
-        console.log(startOfPeriodDate);
         return {von: startOfPeriodDate.getTime(), bis: endOfPeriodDate.getTime()};
     }
 
@@ -405,7 +403,6 @@ class DateHelper {
     static getSubTimeRangesInMillis(timeOfInterestEnumValue, bezugsdatum) {
 
         var startOfPeriodDate = new Date(bezugsdatum.getTime());
-        console.log(startOfPeriodDate);
         var startOfSubPeriodDate = new Date(bezugsdatum.getTime());
         var arrayWithTimeTuples = [];
         switch (timeOfInterestEnumValue) {
@@ -452,7 +449,6 @@ class DateHelper {
                 break;
 
         }
-        console.log(arrayWithTimeTuples);
         return arrayWithTimeTuples;
     }
 

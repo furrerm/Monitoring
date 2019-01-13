@@ -70,7 +70,6 @@ class MessageHandler {
         bubbleChart1Data.push(bubbleChartXAxe);
         bubbleChart1Data.push(maxValue);
 
-        console.log(bubbleChart1Data[0]);
         if(typeof bubbleChart1Data[0] === 'undefined'){
             bubbleChart1Data[0].push([0, 0, 0, '', 0, 0, new Date(2000, 0, 0, 0, 0, 0, 0)]);
             bubbleChartXAxe.push(containersRefinedForBubbleArray[i].label);

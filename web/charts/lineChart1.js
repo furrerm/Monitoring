@@ -104,10 +104,6 @@ function setInterval2(begin, end) {
 
 function drawGraph1(dataArray) {
 
-// data: cutLeadingZeros(messageDataContainer.lineChart1Data.slice())
-    console.log(dataArray);
-    console.log(dataArray.length);
-    console.log(dataArray.value);
     dataArray1 = [];
     dataArray2 = [];
 
@@ -115,9 +111,6 @@ function drawGraph1(dataArray) {
         dataArray1[i] = dataArray[i].value[1];
         dataArray2[i] = dataArray[i].value[0];
     }
-console.log(dataArray1);
-
-console.log(dataArray2);
 
     myChart3.setOption({
         xAxis: {

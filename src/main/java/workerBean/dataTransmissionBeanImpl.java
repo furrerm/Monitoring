@@ -66,8 +66,6 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
         }
         incoming.setUids(uuids);
 
-        System.out.println("incoming result = "+incoming.getIncoming());
-
         return incoming;
     }
 
@@ -93,11 +91,6 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                 String guis = filter.getGuis().stream().map(a -> a.toString()).collect(Collectors.joining(","));
                 String koerbe = filter.getKoerbe().stream().map(a -> a.toString()).collect(Collectors.joining(","));
 
-                System.out.println("timestamps in worker bean");
-
-                System.out.println(new Timestamp(startOfPeriod));
-                System.out.println(new Timestamp(endOfPeriod));
-
                 Query query =
                         entityManager.createNativeQuery("SELECT * FROM " +
                                 "((SELECT Count(*) " +
@@ -115,11 +108,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                                 "AND c.korb in ( " + koerbe + " )" +
                                 ") AS B on 1=1)");
 
-                System.out.println(query.toString());
-
-
                 List<Object[]> results = query.getResultList();
-                System.out.println((results.get(0)[0]));
                 Outgoing outgoing = new Outgoing(((Long) results.get(0)[0]), new Timestamp(startOfPeriod));
                 Map<String, UuidInformation> uuids = new HashMap();
                 for (Object[] result : results) {
@@ -174,10 +163,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
             totalAmount += incoming.getIncoming();
             totalAmount += korbstaendeEntity.getInhalt();
             totalAmount -= outgoing.getOutgoing();
-            System.out.println("line = "+"time = "+korbstaendeEntity.getUpdateTime()+" gui = "+ korbstaendeEntity.getGui()+" korb = "+ korbstaendeEntity.getKorb()+" ");
-            System.out.println("in = "+incoming.getIncoming()+" out = "+outgoing.getOutgoing()+" stand = "+korbstaendeEntity.getInhalt());
         }
-        System.out.println("total in entity = "+totalAmount);
         return new TotalAmount(totalAmount, uuids);
     }
 
@@ -201,10 +187,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                         "AND c.korb = " + korb + " " +
                         ") AS B on 1=1)");
 
-        System.out.println(query.toString());
-
         List<Object[]> results = query.getResultList();
-        System.out.println((results.get(0)[0]));
         Outgoing outgoing = new Outgoing(((Long) results.get(0)[0]), from);
         Map<String, UuidInformation> uuids = new HashMap();
         for (Object[] result : results) {
@@ -237,10 +220,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                         "AND c.korb = " + korb + " " +
                         ") AS B on 1=1)");
 
-        System.out.println(query.toString());
-
         List<Object[]> results = query.getResultList();
-        System.out.println((results.get(0)[0]));
         Incoming incoming = new Incoming(((Long) results.get(0)[0]), from);
         Map<String, UuidInformation> uuids = new HashMap();
         for (Object[] result : results) {

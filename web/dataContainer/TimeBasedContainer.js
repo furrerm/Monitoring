@@ -7,14 +7,12 @@ class TimeBasedContainer {
         this.counter = 0;
         this.timeBasedContainers;
         this.label = label;
-console.log(this.label);
 
         if(respectGranularity){
 
             this.timeBasedContainers = [];
 
             for (var i = 0; i < this.properties.timeOfInterest.ENTITIES; ++i) {
-                console.log("label "+timeOfInterest.LABELS[i])
                 this.timeBasedContainers.push(new TimeBasedContainer(this.properties, this.properties.granularity, false, this.properties.timeOfInterest.LABELS[i]))
             }
         }

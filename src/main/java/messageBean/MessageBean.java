@@ -34,15 +34,12 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
     private EntityManager entityManager;
 
     public void onMessage(Message inMessage) {
-        System.out.println("bean invoked 1");
         ObjectMessage objectMessage = (ObjectMessage) inMessage;
 
         try {
             if (objectMessage.getObject() instanceof sender.MessageData) {
-                System.out.println("bean invoked 2");
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
-//Falls korb nicht existiert speichern
-                System.out.println("bean invoked 3");
+
                 TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k where k.korbName = :korbName",entities.KoerbeEntity.class);
                 query.setParameter("korbName", msg.getKorb());
                 List<entities.KoerbeEntity> results = query.getResultList();
@@ -53,17 +50,13 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                     entityManager.persist(koerbeEntity);
                     entityManager.flush();
                     korbId = koerbeEntity.getIdkoerbe();
-                    System.out.println("korb id = "+koerbeEntity.getIdkoerbe());
                 } else{
                     korbId = results.get(0).getIdkoerbe();
-                    System.out.println("korb id = "+results.get(0).getIdkoerbe()+" = id of k");
                 }
                 //falls kobstand nicht existiert speichern
                 TypedQuery<entities.KorbstaendeEntity> query2 = entityManager.createQuery("select k from KorbstaendeEntity k where k.korb = :korbId and k.gui = :guiId",entities.KorbstaendeEntity.class);
                 query2.setParameter("korbId", korbId);
                 query2.setParameter("guiId", msg.getGui());
-                System.out.println("korb id = "+korbId);
-                System.out.println("gui id = "+msg.getGui());
                 List<entities.KorbstaendeEntity> korbstaendMitGuiUndKorbUebereinstimmung = query2.getResultList();
 
                 if(korbstaendMitGuiUndKorbUebereinstimmung.isEmpty()){
@@ -103,8 +96,6 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                 msg.setKorbId(korbId);
                 dispatcher.sendMessage(msg);
 
-                System.out.println("after db save "+System.currentTimeMillis());
-
             } else if(objectMessage.getObject() instanceof sender.Korbstand){
                 sender.Korbstand korbstandObject = (sender.Korbstand) objectMessage.getObject();
                 TypedQuery<entities.KoerbeEntity> query = entityManager.createQuery("select k from KoerbeEntity k where k.korbName = :korbName",entities.KoerbeEntity.class);
@@ -133,8 +124,6 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
 
 
 
-            } else {
-                System.out.println("wrong type in Bean: ");
             }
         } catch (JMSException e) {
             e.printStackTrace();

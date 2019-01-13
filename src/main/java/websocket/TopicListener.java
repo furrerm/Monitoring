@@ -55,8 +55,6 @@ public class TopicListener  {
             // start the connection
             topicConn.start();
 
-            System.out.println("connected successsssfulllly");
-
         } catch (NamingException e) {
             e.printStackTrace();
         } catch (JMSException e) {

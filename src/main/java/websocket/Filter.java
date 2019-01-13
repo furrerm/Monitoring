@@ -13,30 +13,15 @@ public class Filter {
     private List<Long> subPeriods;
 
     public Filter(String message) {
-        System.out.println("message = " + message);
-        System.out.println("here 1");
+
         JsonReader jsonReader = Json.createReader(new StringReader(message));
-        System.out.println("here 2");
-        //JsonArray array = jsonReader.readArray();
+
+
         JsonObject obj = jsonReader.readObject();
-        System.out.println("here 3");
-
-        System.out.println("message = " + message);
-        System.out.println("koerbe = " + obj.getJsonArray("koerbe"));
-        System.out.println("guis = " + obj.getJsonArray("guis"));
-        System.out.println("subtimes = "+obj.getJsonArray("subTimeList"));
-
-        //System.out.println("guis = "+obj.getJsonArray("guis"));
-
-
-
 
         koerbe = toIntSet(obj.getJsonArray("koerbe"));
-        System.out.println("here 13");
         guis = toIntSet(obj.getJsonArray("guis"));
-        System.out.println("here 14");
         subPeriods = new ArrayList(toLongSet(obj.getJsonArray("subTimeList")));
-        System.out.println("here 15");
         subPeriods.sort((a,b) -> {
             if(a - b > 0){
                 return 1;
@@ -45,23 +30,11 @@ public class Filter {
             }
             return 0;
         });
-        koerbe.forEach(a -> System.out.println(a));
-
-        subPeriods.forEach(a -> System.out.println(new Timestamp(a)));
-
 
         this.von = new Timestamp(obj.getJsonNumber("timeOfInterest").longValue());
         this.bis = new Timestamp(obj.getJsonNumber("timeOfInterestEnd").longValue());
-        System.out.println("timestamp = " + this.von);
-        System.out.println("timestamp bis = " + this.bis);
 
         jsonReader.close();
-
-/*
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-        Json json = new Json(message);
-        message
-        */
     }
 
     private Set<String> toStringSet(JsonArray array) {
@@ -96,7 +69,6 @@ public class Filter {
 
     private void toDate(JsonValue value) {
         String stringValue = value.toString();
-        System.out.println(stringValue);
     }
 
     public Timestamp getVon() {
