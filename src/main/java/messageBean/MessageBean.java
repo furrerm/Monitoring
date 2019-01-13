@@ -111,12 +111,28 @@ public class MessageBean implements MessageListener, MessageDrivenBean {
                 query.setParameter("korbName", korbstandObject.getKorb());
                 entities.KoerbeEntity korbEntity = query.getSingleResult();
 
-                KorbstaendeEntity korbstaendeEntity = new KorbstaendeEntity();
-                korbstaendeEntity.setGui(korbstandObject.getGui());
-                korbstaendeEntity.setInhalt(korbstandObject.getKorbstand());
-                korbstaendeEntity.setKoerbeByKorb(korbEntity);
-                korbstaendeEntity.setUpdateTime(korbstandObject.getTime());
+                TypedQuery<entities.KorbstaendeEntity> query2 = entityManager.createQuery("select k from KorbstaendeEntity k where k.korb = :korb AND k.gui = :gui",entities.KorbstaendeEntity.class);
+                query2.setParameter("korb", korbEntity.getIdkoerbe());
+                query2.setParameter("gui", korbstandObject.getGui());
+                List<KorbstaendeEntity> korbstaendeEntities = query2.getResultList();
+                KorbstaendeEntity korbstaendeEntity;
+                if(korbstaendeEntities.isEmpty()){
+                    korbstaendeEntity = new KorbstaendeEntity();
+                    korbstaendeEntity.setGui(korbstandObject.getGui());
+                    korbstaendeEntity.setInhalt(korbstandObject.getKorbstand());
+                    korbstaendeEntity.setKoerbeByKorb(korbEntity);
+                    korbstaendeEntity.setUpdateTime(korbstandObject.getTime());
+
+                } else {
+                    korbstaendeEntity = korbstaendeEntities.get(0);
+                    korbstaendeEntity.setInhalt(korbstandObject.getKorbstand());
+                    korbstaendeEntity.setUpdateTime(korbstandObject.getTime());
+                }
+
                 entityManager.persist(korbstaendeEntity);
+
+
+
             } else {
                 System.out.println("wrong type in Bean: ");
             }

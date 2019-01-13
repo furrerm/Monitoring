@@ -11,13 +11,14 @@ import java.util.Set;
 public class Outgoing implements GeneralDTO {
     private long outgoing;
     private Timestamp timestamp;
-    private Map<String, Timestamp> uids;
+    private Map<String, UuidInformation> uids;
 
     public Outgoing(sender.MessageData message){
         this.outgoing = message.getOut();
         this.timestamp = message.getTime();
         this.uids = new HashMap<>();
-        uids.put(message.getUuid(),message.getTime());
+        UuidInformation uuidInformation = new UuidInformation(false, message.getTime());
+        uids.put(message.getUuid(),uuidInformation);
     }
     public Outgoing(long outgoing, Timestamp timestamp) {
         this.outgoing = outgoing;
@@ -33,7 +34,7 @@ public class Outgoing implements GeneralDTO {
     }
 
     @Override
-    public Map<String, Timestamp> getUids() {
+    public Map<String, UuidInformation> getUids() {
         return uids;
     }
 
@@ -42,7 +43,7 @@ public class Outgoing implements GeneralDTO {
         outgoing-= amountToSubtract;
     }
 
-    public void setUids(Map<String, Timestamp> uids) {
+    public void setUids(Map<String, UuidInformation> uids) {
         this.uids = uids;
     }
 

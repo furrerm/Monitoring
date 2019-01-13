@@ -1,12 +1,14 @@
 var conn;
 var filterProperties = new FilterProperties("0", [""], [""], [""]);
 var messageDataContainer;
-function inform(){
+
+function inform() {
     //console.log("filter change = "+filterProperties);
 }
 
 
 var messageHandler = new MessageHandler(new FilterProperties(TimeOfInterest.DAY, [""], [0], [""]));
+
 async function asyncReaderFunc(msg) {
     var reader = new FileReader();
     reader.onload = function () {
@@ -15,6 +17,9 @@ async function asyncReaderFunc(msg) {
         let obj = JSON.parse(reader.result);
         console.log(obj);
         if (isNaN(obj.length)) {
+            if (obj.identifier === "TotalAmount") {
+                console.log("yeahaaaaa = " + obj.korbstand);
+            }
             var message = new Message(obj);
 
             console.log(obj);
@@ -28,7 +33,8 @@ async function asyncReaderFunc(msg) {
             drawGraph1(messageHandler.getLineChartArray());
             setDataValue5(messageHandler.getBubbleChartArray());
 
-            console.log("time for performanceanalysis = "+new Date().getTime());
+            console.log("time for performanceanalysis = " + new Date().getTime());
+
 
         }
         else {
@@ -38,7 +44,7 @@ async function asyncReaderFunc(msg) {
             for (let i = 0; i < messageCounter; ++i) {
                 console.log(obj[i]);
 
-                $("#korbMultiSelector").append("<option class='update' value="+obj[i].id+">" + obj[i].korbName + "</option>");
+                $("#korbMultiSelector").append("<option class='update' value=" + obj[i].id + ">" + obj[i].korbName + "</option>");
             }
             setProperties();
 

@@ -22,5 +22,7 @@ class Message{
         this.korbstand = message.korbstand;
         this.in = message.in;
         this.out = message.out;
+
+        this.identifier = message.identifier;
     }
 }

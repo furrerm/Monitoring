@@ -7,6 +7,6 @@ import java.util.Set;
 
 public interface GeneralDTO {
     JsonObject toJsonString();
-    Map<String, Timestamp> getUids();
+    Map<String, UuidInformation> getUids();
     void correctAmount(int amountToSubtract);
 }

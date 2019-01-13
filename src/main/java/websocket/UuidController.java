@@ -1,5 +1,7 @@
 package websocket;
 
+import dtos.UuidInformation;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,51 +9,53 @@ import java.util.Map;
 import java.util.Set;
 
 public class UuidController {
-    private Map<String, Timestamp> savedUuids = new HashMap<>();
+    private Map<String, UuidInformation> savedUuids = new HashMap<>();
 
-    public Map<String, Timestamp> getSavedUuids() {
+    public Map<String, UuidInformation> getSavedUuids() {
         return savedUuids;
     }
 
-    public void setSavedUuids(Map<String, Timestamp> savedUuids) {
+    public void setSavedUuids(Map<String, UuidInformation> savedUuids) {
         this.savedUuids = savedUuids;
     }
-/*
-    public int saveAndGetAmountOfDoubleEntries(String uuidToCheck) {
-        if (uuidToCheck == null) {
-            return 0;
-        }
-        int amountOfDoubleEntries = 0;
 
-        if (savedUuids.keySet().contains(uuidToCheck)) {
-            amountOfDoubleEntries = 1;
-        }
-        savedUuids.put(uuidToCheck);
-
-        return amountOfDoubleEntries;
-    }
-*/
-    public int saveAndGetAmountOfDoubleEntries(Map<String,Timestamp> uuidsToCheck) {
+    public int saveAndGetAmountOfDoubleEntries(Map<String, UuidInformation> uuidsToCheck) {
         if (uuidsToCheck == null) {
             return 0;
         }
-        System.out.println("in get amount and save");
+        System.out.println("saved uuids");
         int amountOfDoubleEntries = 0;
+        savedUuids.keySet().forEach(a -> System.out.println(a));
+        System.out.println("uuids to check");
+
         for (String uuidToCheck : uuidsToCheck.keySet()) {
+            System.out.println(uuidToCheck);
             if (savedUuids.keySet().contains(uuidToCheck)) {
-                ++amountOfDoubleEntries;
+                if(uuidsToCheck.get(uuidToCheck).isIncoming()){
+                    --amountOfDoubleEntries;
+                } else{
+                    ++amountOfDoubleEntries;
+                }
             }
-            savedUuids.put(uuidToCheck, uuidsToCheck.get(uuidToCheck));
+            if(uuidToCheck != null){
+                savedUuids.put(uuidToCheck, uuidsToCheck.get(uuidToCheck));
+            }
         }
+        System.out.println("amount of double entries = "+amountOfDoubleEntries);
         clearOldEntries();
+
         return amountOfDoubleEntries;
+    }
+
+    public void deleteSavedUuids(){
+        savedUuids = new HashMap<>();
     }
 
     private void clearOldEntries() {
         Timestamp latMinute = new Timestamp(System.currentTimeMillis()-60000);
         Set<String> uuidsToRemove = new HashSet<>();
         for(String uuid : savedUuids.keySet()){
-            if(uuid != null && savedUuids.get(uuid).before(latMinute)){
+            if(uuid != null && savedUuids.get(uuid).getTimestamp().before(latMinute)){
 
                 uuidsToRemove.add(uuid);
             }

@@ -105,6 +105,10 @@ class DataContainer {
                 this.newestMessage = message.zeitstempelDate;
             }
         }
+        if(message.identifier === 'TotalAmount' && typeof message.korbstand !== 'undefined'){
+            console.log("message korbstand = "+message.korbstand);
+            this.korbstaende = message.korbstand;
+        }
     }
 
     initialize() {

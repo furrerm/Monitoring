@@ -2,6 +2,7 @@ package websocket;
 
 import dtos.Incoming;
 import dtos.Outgoing;
+import dtos.TotalAmount;
 import entities.DataEntity;
 import entities.EntityRefiner;
 import entities.EntityRefinerImpl;
@@ -34,10 +35,7 @@ public class Websocket {
     public void onOpen(Session userSession) {
 
         sessionInformation = new SessionInformation(userSession);
-
         topicListener = new TopicListener(sessionInformation);
-
-
 
         try {
             InitialContext ctx = new InitialContext();
@@ -60,6 +58,8 @@ public class Websocket {
 
     @OnMessage
     public void onMessage(String message, Session userSession) {
+
+        sessionInformation.getUuidController().deleteSavedUuids();
         Filter filter = new Filter(message);
         sessionInformation.setFilter(filter);
         Incoming incoming = getEntitiesFromBegin(filter);
@@ -76,11 +76,15 @@ public class Websocket {
             }
             topicListener.getSender().send(outgoing, sessionInformation.getSession());
         }
-    }
 
+        TotalAmount totalAmount = getTotalAmount(filter);
+        System.out.println("total amount = "+totalAmount.getAggregiertesTotal());
+        topicListener.getSender().send(totalAmount, sessionInformation.getSession());
+
+    }
     private Incoming getEntitiesFromBegin(Filter filter){
 
-        System.out.println("pre pre query");
+        System.out.println("pre pre query Incoming");
         Incoming incoming = null;
         try {
             InitialContext ctx = new InitialContext();
@@ -98,7 +102,7 @@ public class Websocket {
 
     private List<Outgoing> getOutgoings(Filter filter){
 
-        System.out.println("pre pre query");
+        System.out.println("pre pre query outgoings");
         List<Outgoing> outgoings = null;
         try {
             InitialContext ctx = new InitialContext();
@@ -110,5 +114,20 @@ public class Websocket {
             e.printStackTrace();
         }
         return outgoings;
+    }
+    private TotalAmount getTotalAmount(Filter filter){
+
+        System.out.println("pre pre query total");
+        TotalAmount totalAmount = null;
+        try {
+            InitialContext ctx = new InitialContext();
+
+            dataTransmissionBean libraryBean1 =
+                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+            totalAmount = libraryBean1.getTotalAmount(filter);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return totalAmount;
     }
 }

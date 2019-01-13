@@ -37,7 +37,7 @@ public class Sender implements MessageListener {
             if (objectMessage.getObject() instanceof sender.MessageData) {
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
 
-                if(this.messageIsValid(msg, sessionInformation.getFilter())) {
+                if (this.messageIsValid(msg, sessionInformation.getFilter())) {
 
                     DTOFactory dtoFactory = new DTOFactory();
 
@@ -56,33 +56,25 @@ public class Sender implements MessageListener {
         }
     }
 
-    public void send(GeneralDTO dto, Session session){
+    public void send(GeneralDTO dto, Session session) {
 
-        //dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
+        System.out.println("before correction = "+dto.toJsonString().toString());
+        dto.correctAmount(sessionInformation.getUuidController().saveAndGetAmountOfDoubleEntries(dto.getUids()));
         JsonObject objectToSend = dto.toJsonString();
-        System.out.println("before websocket "+System.currentTimeMillis());
+        System.out.println("before websocket " + System.currentTimeMillis());
+        System.out.println(objectToSend.toString());
         if (session.isOpen()) {
-
-
             try {
-
-
-                    RemoteEndpoint.Async async = session.getAsyncRemote();
-                    async.sendBinary(ByteBuffer.wrap(objectToSend.toString().getBytes()));
-
-
-
-
+                RemoteEndpoint.Async async = session.getAsyncRemote();
+                async.sendBinary(ByteBuffer.wrap(objectToSend.toString().getBytes()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-        } else{
+        } else {
             System.out.println("Session was closed");
         }
-
     }
+
     public void send(List<KoerbeEntity> messages, Session session) {
 
         System.out.println("called tl is instance");
@@ -149,8 +141,8 @@ public class Sender implements MessageListener {
 
         return null;
     }
-    private JsonArray createJsonArrayFromString(List<KoerbeEntity> messages) {
 
+    private JsonArray createJsonArrayFromString(List<KoerbeEntity> messages) {
 
 
         try {
@@ -170,12 +162,13 @@ public class Sender implements MessageListener {
 
         return null;
     }
-    private boolean messageIsValid(sender.MessageData messageData, Filter filter){
-        if(filter.getKoerbe().contains(messageData.getKorbId()) &&
+
+    private boolean messageIsValid(sender.MessageData messageData, Filter filter) {
+        if (filter.getKoerbe().contains(messageData.getKorbId()) &&
                 filter.getGuis().contains(messageData.getGui()) &&
                 (filter.getBis().after(messageData.getTime()) || filter.getBis().equals(messageData.getTime())) &&
-                        (filter.getVon().before(messageData.getTime()))){
-                    return true;
+                (filter.getVon().before(messageData.getTime()))) {
+            return true;
         }
         return false;
     }

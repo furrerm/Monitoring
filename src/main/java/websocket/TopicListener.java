@@ -35,7 +35,6 @@ public class TopicListener  {
         try {
             ctx = new InitialContext();
 
-
             // lookup the topic object
             Topic topic = (Topic) ctx.lookup("Topic2");
 
@@ -48,7 +47,6 @@ public class TopicListener  {
             // create a topic session
             TopicSession topicSession = topicConn.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 
-
             // create a topic subscriber
             TopicSubscriber topicSubscriber = topicSession.createSubscriber(topic);
 
@@ -58,7 +56,6 @@ public class TopicListener  {
             topicConn.start();
 
             System.out.println("connected successsssfulllly");
-
 
         } catch (NamingException e) {
             e.printStackTrace();
