@@ -3,15 +3,9 @@ package websocket;
 import dtos.Incoming;
 import dtos.Outgoing;
 import dtos.TotalAmount;
-import entities.DataEntity;
-import entities.EntityRefiner;
-import entities.EntityRefinerImpl;
 import entities.KoerbeEntity;
-import jmsConnector.Dispatcher;
 import workerBean.dataTransmissionBean;
 
-import javax.jms.*;
-import javax.json.JsonArray;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.websocket.OnClose;
@@ -22,11 +16,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.*;
 
-
 @ServerEndpoint(value = "/echo")
 public class Websocket {
-
-    //private static Map<Session, SessionInformation> sessions = new ConcurrentHashMap<>();
 
     private TopicListener topicListener;
     private SessionInformation sessionInformation;
@@ -41,7 +32,7 @@ public class Websocket {
             InitialContext ctx = new InitialContext();
 
             dataTransmissionBean libraryBean1 =
-                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+                    (dataTransmissionBean) ctx.lookup("java:global/Monitoring/dataTransmissionEJB!workerBean.dataTransmissionBean");
             List<KoerbeEntity> list = libraryBean1.getKoerbe();
             topicListener.getSender().send(list, sessionInformation.getSession());
 
@@ -81,7 +72,7 @@ public class Websocket {
             InitialContext ctx = new InitialContext();
 
             dataTransmissionBean libraryBean1 =
-                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+                    (dataTransmissionBean) ctx.lookup("java:global/Monitoring/dataTransmissionEJB!workerBean.dataTransmissionBean");
             incoming = libraryBean1.saveIt(filter);
         } catch (NamingException e) {
             e.printStackTrace();
@@ -98,7 +89,7 @@ public class Websocket {
             InitialContext ctx = new InitialContext();
 
             dataTransmissionBean libraryBean1 =
-                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+                    (dataTransmissionBean) ctx.lookup("java:global/Monitoring/dataTransmissionEJB!workerBean.dataTransmissionBean");
             outgoings = libraryBean1.getOutgoings(filter);
         } catch (NamingException e) {
             e.printStackTrace();
@@ -112,7 +103,7 @@ public class Websocket {
             InitialContext ctx = new InitialContext();
 
             dataTransmissionBean libraryBean1 =
-                    (dataTransmissionBean) ctx.lookup("java:global/messageBean1/dataTransmissionEJB!workerBean.dataTransmissionBean");
+                    (dataTransmissionBean) ctx.lookup("java:global/Monitoring/dataTransmissionEJB!workerBean.dataTransmissionBean");
             totalAmount = libraryBean1.getTotalAmount(filter);
         } catch (NamingException e) {
             e.printStackTrace();

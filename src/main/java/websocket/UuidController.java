@@ -38,7 +38,7 @@ public class UuidController {
             }
         }
         clearOldEntries();
-
+        System.out.println("amount of double entries = "+amountOfDoubleEntries);
         return amountOfDoubleEntries;
     }
 
@@ -50,7 +50,8 @@ public class UuidController {
         Timestamp latMinute = new Timestamp(System.currentTimeMillis()-60000);
         Set<String> uuidsToRemove = new HashSet<>();
         for(String uuid : savedUuids.keySet()){
-            if(uuid != null && savedUuids.get(uuid).getTimestamp().before(latMinute)){
+            if(uuid != null && savedUuids.get(uuid).getTimestamp().before(latMinute)
+                    || uuid != null && savedUuids.get(uuid).getTimestamp().after(new Timestamp(System.currentTimeMillis()))){
 
                 uuidsToRemove.add(uuid);
             }

@@ -18,10 +18,6 @@ public class TotalAmount implements GeneralDTO {
         this.uids = uids;
     }
 
-    public long getAggregiertesTotal() {
-        return aggregiertesTotal;
-    }
-
     @Override
     public Map<String, UuidInformation> getUids() {
         return uids;
@@ -29,11 +25,7 @@ public class TotalAmount implements GeneralDTO {
 
     @Override
     public void correctAmount(int amountToSubtract) {
-        aggregiertesTotal -= amountToSubtract;
-    }
-
-    public void setUids(Map<String, UuidInformation> uids) {
-        this.uids = uids;
+        aggregiertesTotal += amountToSubtract;
     }
 
     @Override

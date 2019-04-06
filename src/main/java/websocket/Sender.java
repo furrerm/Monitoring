@@ -32,13 +32,13 @@ public class Sender implements MessageListener {
     }
 
     public void onMessage(Message message) {
+
         ObjectMessage objectMessage = (ObjectMessage) message;
         try {
             if (objectMessage.getObject() instanceof sender.MessageData) {
+
                 sender.MessageData msg = (sender.MessageData) objectMessage.getObject();
-
                 if (this.messageIsValid(msg, sessionInformation.getFilter())) {
-
                     DTOFactory dtoFactory = new DTOFactory();
 
                     this.send(dtoFactory.createGeneralDTOFromMessage(msg), sessionInformation.getSession());

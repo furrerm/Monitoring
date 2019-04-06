@@ -25,7 +25,7 @@ public class Dispatcher {
     private ObjectMessage objMessage;
     private TopicPublisher sender;
     private TopicConnection con;
-    private int cou = 0;
+
 
     private Dispatcher() {
         this.initialize();
@@ -39,30 +39,22 @@ public class Dispatcher {
     }
 
     public synchronized void sendMessage(sender.MessageData message) {
-        ++cou;
-        try {
-
-            objMessage.setObject(message);
-
-
-            try{
-
-
-
-                        sender.publish(objMessage);
-
-
-            } catch(JMSException jmsException){
-                try {
-                    Thread.sleep(10);
-                    this.sendMessage(message);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        int numberOfRetries = 0;
+        do {
+            try {
+                objMessage.setObject(message);
+                sender.publish(objMessage);
+                break;
+            } catch (JMSException e) {
+                e.printStackTrace();
             }
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
+            try {
+                ++numberOfRetries;
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        } while (numberOfRetries < 10);
     }
 
     public synchronized void initialize() {
@@ -77,7 +69,7 @@ public class Dispatcher {
 
             TopicSession ses = con.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            Topic t = (Topic) ctx.lookup("Topic2");
+            Topic t = (Topic) ctx.lookup("DispatcherTopic");
 
             sender = ses.createPublisher(t);
 

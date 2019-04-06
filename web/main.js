@@ -42,7 +42,7 @@ async function asyncReaderFunc(msg) {
 async function connect() {
 
 
-    conn = new WebSocket("ws://localhost:8384/messageBean1/echo");
+    conn = new WebSocket("ws://localhost:8384/Monitoring/echo");
     conn.onmessage = (msg) => {
         asyncReaderFunc(msg.data);
 

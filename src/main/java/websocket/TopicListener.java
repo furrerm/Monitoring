@@ -36,7 +36,7 @@ public class TopicListener  {
             ctx = new InitialContext();
 
             // lookup the topic object
-            Topic topic = (Topic) ctx.lookup("Topic2");
+            Topic topic = (Topic) ctx.lookup("DispatcherTopic");
 
             // lookup the topic connection factory
             TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("jms/topicFactory");

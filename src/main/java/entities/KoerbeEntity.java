@@ -7,12 +7,14 @@ import java.util.Objects;
 @Entity
 @Table(name = "koerbe", schema = "cssdashboard", catalog = "")
 public class KoerbeEntity {
+
     private int idkoerbe;
     private String korbName;
     private Collection<KorbstaendeEntity> korbstaendesByIdkoerbe;
 
     @Id
     @Column(name = "idkoerbe", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int getIdkoerbe() {
         return idkoerbe;
     }

@@ -103,7 +103,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                                 ") AS A " +
                                 "LEFT OUTER JOIN (SELECT c.uuid, c.time FROM data c " +
                                 "WHERE c.outgoing = 1 " +
-                                "AND c.time >= '" + new Timestamp(startOfPeriod) + "' " +
+                                "AND c.time >= '" + lastMinute + "' " +
                                 "AND c.gui in ( " + guis + " )" +
                                 "AND c.korb in ( " + koerbe + " )" +
                                 ") AS B on 1=1)");
@@ -132,8 +132,6 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
 
                 long result = query.setParameter("guis", filter.getGuis()).setParameter("koerbe", filter.getKoerbe()).getSingleResult();
 
-
-                String koerbe = "1,2,3,4,5";
                 Outgoing outgoing = new Outgoing(result, new Timestamp(startOfPeriod));
                 outgoings.add(outgoing);
             }
@@ -150,12 +148,12 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
                         "AND k.korb in :koerbe ", KorbstaendeEntity.class);
 
         List<KorbstaendeEntity> resultList = query.setParameter("guis", filter.getGuis()).setParameter("koerbe", filter.getKoerbe()).getResultList();
-
+        List<KorbstaendeEntity> completedList = getAllKorbstaendeEvenNotInDBAvailable(resultList, filter);
         long totalAmount = 0;
         Map<String, UuidInformation> uuids = new HashMap();
         Incoming incoming;
         Outgoing outgoing;
-        for(KorbstaendeEntity korbstaendeEntity : resultList){
+        for (KorbstaendeEntity korbstaendeEntity : completedList) {
             incoming = this.getIncoming(korbstaendeEntity.getUpdateTime(), korbstaendeEntity.getGui(), korbstaendeEntity.getKorb());
             outgoing = this.getOutgoing(korbstaendeEntity.getUpdateTime(), korbstaendeEntity.getGui(), korbstaendeEntity.getKorb());
             uuids.putAll(incoming.getUids());
@@ -163,8 +161,38 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
             totalAmount += incoming.getIncoming();
             totalAmount += korbstaendeEntity.getInhalt();
             totalAmount -= outgoing.getOutgoing();
+            System.out.println("total amoutn temp = " + totalAmount);
+            System.out.println("gui = " + korbstaendeEntity.getGui() + "  korb = " + korbstaendeEntity.getKorb() + " time = " + korbstaendeEntity.getUpdateTime());
+
         }
         return new TotalAmount(totalAmount, uuids);
+    }
+
+    private List<KorbstaendeEntity> getAllKorbstaendeEvenNotInDBAvailable(List<KorbstaendeEntity> korbstaendeEntities, Filter filter) {
+        Set<Integer> guis = filter.getGuis();
+        Set<Integer> koerbe = filter.getKoerbe();
+        Timestamp timeOfInterset = filter.getVon();
+
+        System.out.println("filter von = "+filter.getVon());
+
+        List<KorbstaendeEntity> korbstaendeEntityList = new ArrayList<>();
+        for (Integer gui : guis) {
+            for (Integer korb : koerbe) {
+                KorbstaendeEntity korbstaendeEntityToReturn = new KorbstaendeEntity();
+                korbstaendeEntityToReturn.setUpdateTime(timeOfInterset);
+                korbstaendeEntityToReturn.setKorb(korb);
+                korbstaendeEntityToReturn.setGui(gui);
+                korbstaendeEntityToReturn.setInhalt(0);
+                for (KorbstaendeEntity korbstaendeEntity : korbstaendeEntities) {
+                    if (korbstaendeEntity.getGui() == gui && korbstaendeEntity.getKorb() == korb) {
+                        korbstaendeEntityToReturn.setUpdateTime(korbstaendeEntity.getUpdateTime());
+                        korbstaendeEntityToReturn.setInhalt(korbstaendeEntity.getInhalt());
+                    }
+                }
+                korbstaendeEntityList.add(korbstaendeEntityToReturn);
+            }
+        }
+        return korbstaendeEntityList;
     }
 
     public Outgoing getOutgoing(Timestamp from, int gui, int korb) {
@@ -193,8 +221,11 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
         for (Object[] result : results) {
             if (result[1] != null) {
                 uuids.put(result[1].toString(), new UuidInformation(false, (Timestamp) result[2]));
+
             }
         }
+
+        System.out.println("outgoing = "+outgoing.getOutgoing()+ " for korb = "+korb+" gui = "+gui+ " from = "+from);
         outgoing.setUids(uuids);
 
         return outgoing;
@@ -232,6 +263,7 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
 
         return incoming;
     }
+
     @Override
     public List<KoerbeEntity> getKoerbe() {
 
@@ -240,21 +272,5 @@ public class dataTransmissionBeanImpl implements dataTransmissionBean {
         List<KoerbeEntity> koerbe = query.getResultList();
 
         return koerbe;
-    }
-
-
-    public long count() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-
-        CriteriaQuery<Long> countCriteriaQuery = criteriaBuilder.createQuery(Long.class);
-        countCriteriaQuery.select(criteriaBuilder.count(countCriteriaQuery.from(DataEntity.class)));
-
-        ParameterExpression<String> nameParamExp2 = criteriaBuilder.parameter(String.class);
-        countCriteriaQuery.where(criteriaBuilder.equal(countCriteriaQuery.from(DataEntity.class).get("korb"), nameParamExp2));
-
-        //countCriteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-        TypedQuery<Long> typedQuery = entityManager.createQuery(countCriteriaQuery);
-        typedQuery.setParameter(nameParamExp2, "Korb2");
-        return typedQuery.getSingleResult();
     }
 }
